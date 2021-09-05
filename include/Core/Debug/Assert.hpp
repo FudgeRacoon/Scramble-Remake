@@ -20,7 +20,7 @@
         if(!(_EXPR))\
         {\
             printf("Assertion Failed: %s | File %s | Line %d\n", #_EXPR, __FILE__, __LINE__);\
-            Scramble::Logger::LogError("%s", ##__VA_ARGS__);\
+            S_FATAL("%s", ##__VA_ARGS__);\
             exit(EXIT_FAILURE);\
         }
 #endif

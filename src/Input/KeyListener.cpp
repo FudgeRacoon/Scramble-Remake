@@ -1,30 +1,28 @@
 #include "Input/KeyListener.hpp"
 using namespace Scramble::Input;
 
-byte* KeyListener::keyboardStates = nullptr;
-
-void KeyListener::OnStartUp()
+KeyListener::KeyListener()
 {
-    S_INFO("KeyListener is starting up...");
-
-    keyboardStates = new byte[512];
+    this->keyboardStates = new byte[512];
     memset(keyboardStates, 0, 512);
+
+    SetOnKeyPress([] (KeyPressedEvent* e) {keyboardStates[e->GetKey()] = 1;});
+    SetOnKeyRelease([] (KeyReleasedEvent* e) {keyboardStates[e->GetKey()] = 0;});
 }
-void KeyListener::OnShutDown()
+
+KeyListener::~KeyListener()
 {
-    delete[] keyboardStates;
+    delete[] this->keyboardStates;
+}
+
+KeyListener* GetInstance()
+{
+    static KeyListener* instance = new KeyListener();
+    return instance;
 }
 
 const byte* KeyListener::GetKeyboardState()
 {
-    return keyboardStates;
-}
-
-void KeyListener::KeyCallback(GLFWwindow* handle, int key, int scancode, int action, int mods)
-{
-    if(action == GLFW_PRESS)
-        keyboardStates[key] = 1;
-    else if(action == GLFW_RELEASE)
-        keyboardStates[key] = 0;
+    return this->keyboardStates;
 }
 

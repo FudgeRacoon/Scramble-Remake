@@ -8,32 +8,32 @@
 #include "Core/Common/Types.hpp"
 #include "Core/Logger/Logger.hpp"
 
+#include "Events/MouseEvent.hpp"
+#include "Events/EventHandler.hpp"
+using namespace Scramble::Events;
+
 namespace Scramble::Input
 {
-    class MouseListener
+    class MouseListener : public EventHandler
     {
     private:
-        static I32* x; 
-        static I32* y;
-        static I32* xOffset; 
-        static I32* yOffset;
-        static byte* mouseState;
+        I32* x; 
+        I32* y;
+        I32* xOffset; 
+        I32* yOffset;
+        byte* mouseState;
 
     private:
-        MouseListener() = delete;
-        ~MouseListener() = delete;
+        MouseListener();
 
     public:
-        static void OnStartUp();
-        static void OnShutDown();
+        ~MouseListener();
 
     public:
-        static const byte* GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset);
+        static MouseListener* GetInstance();
 
     public:
-        static void MousePosCallback(GLFWwindow* handle, double x, double y);
-        static void MouseButtonCallback(GLFWwindow* handle, int button, int action, int mods);
-        static void MouseScrollCallback(GLFWwindow* handle, double xOffset, double yOffset);
+        const byte* GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset);
     };
 }
 

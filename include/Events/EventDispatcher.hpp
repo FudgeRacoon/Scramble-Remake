@@ -12,7 +12,6 @@
 #include "KeyEvent.hpp"
 #include "MouseEvent.hpp"
 #include "ApplicationEvent.hpp"
-#include "ApplicationEvent.hpp"
 #include "EventHandler.hpp"
 
 namespace Scramble::Events
@@ -28,6 +27,9 @@ namespace Scramble::Events
         EventDispatcher() = delete;
         ~EventDispatcher() = delete;
 
+    private:
+        static void DispatchEvent(Event* event);
+    
     private:
         template<typename EventType, typename... EventArgs>
         static void RaiseEvent(GLFWwindow* windowHandle, EventArgs... args)
@@ -70,19 +72,13 @@ namespace Scramble::Events
             DispatchEvent(&event);  
         }
         
-    private:
-        static void DispatchEvent(Event* event);
-
     public:
         static void OnStartUp(GLFWwindow* windowHandle);
         static void OnShutDown();
 
     public:
         static void PollEvents();
-
-    public:
-        static U32 GetNumberOfHandlers();
-    
+  
     public:
         static void AddHandler(EventHandler* handler);
         static void RemoveHandler(EventHandler* handler);

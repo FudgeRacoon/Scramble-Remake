@@ -1,8 +1,8 @@
 #include "Core/Application.hpp"
 using namespace Scramble;
 
-std::unique_ptr<Window> Application::windowContext;
-std::unique_ptr<RuntimeInstance> Application::runtimeContext;
+UniquePtr<Window> Application::windowContext;
+UniquePtr<RuntimeInstance> Application::runtimeContext;
 
 float counter = 0.0;
 #define SCRAMBLE_NO_DEBUG
@@ -11,21 +11,11 @@ void Application::Start(RuntimeInstance* instance)
 {
     Time::OnStartUp();
 
-    windowContext = std::unique_ptr<Window>(new Window());
-    runtimeContext = std::unique_ptr<RuntimeInstance>(instance);
+    windowContext = UniquePtr<Window>(new Window());
+    runtimeContext = UniquePtr<RuntimeInstance>(instance);
 
     Events::EventDispatcher::OnStartUp(windowContext->GetNativeHandle());
     
-    windowContext->SetOnMouseMove([] (MouseMovedEvent* e)
-        {
-            S_DEBUG("%d %d", e->GetX(), e->GetY());
-        }
-    );
-
-    Input::KeyListener::OnStartUp();
-    Input::MouseListener::OnStartUp();
-    Input::InputManager::OnStartUp();
-
     Graphics::GraphicsContext::OnStartUp(windowContext->GetNativeHandle());
     Graphics::RenderCommand::OnStartUp(0, 0, windowContext->GetWidth(), windowContext->GetHeight());
     Graphics::OpenGLDebugger::OnStartUp();
@@ -69,9 +59,6 @@ void Application::ShutDown()
 {
     Graphics::Renderer::OnShutDown();
     ResourceManager::OnShutDown();
-
-    Input::KeyListener::OnShutDown(); 
-    Input::MouseListener::OnShutDown();
 
     Events::EventDispatcher::OnShutDown();
 

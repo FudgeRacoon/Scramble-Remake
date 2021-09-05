@@ -1,7 +1,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include <memory>
+#include "Common/Types.hpp"
 
 #include "Graphics/OpenGL/Debug/OpenGLDebugger.hpp"
 #include "Graphics/GraphicsContext.hpp"
@@ -27,8 +27,8 @@ namespace Scramble
     class Application
     {
     private:
-        static std::unique_ptr<Window> windowContext;
-        static std::unique_ptr<RuntimeInstance> runtimeContext;
+        static UniquePtr<Window> windowContext;
+        static UniquePtr<RuntimeInstance> runtimeContext;
     
     public:
         static void Start(RuntimeInstance* instance);

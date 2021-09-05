@@ -31,11 +31,6 @@ void EventDispatcher::PollEvents()
     glfwPollEvents();
 }
 
-U32 EventDispatcher::GetNumberOfHandlers()
-{
-    return handlers.size();
-}
-
 void EventDispatcher::AddHandler(EventHandler* handler)
 {
     handlers.push_back(handler);

@@ -7,16 +7,27 @@ namespace Scramble
 {
     struct WindowProps
     {
+    public:
         const char* title;
-        
+    
+    public:
         U32 width, height;
-        
+    
+    public:
         bool fullscreen;
         bool vSync;
 
-        WindowProps(const char* title = "Scramble", 
-                    U32 width = 800, U32 height = 600, 
-                    bool fullscreen = false, bool vSync = true); 
+    public:
+        WindowProps()
+        {
+            this->title = "Scramble";
+
+            this->width = 800;
+            this->height = 600;
+
+            this->fullscreen = false;
+            this->vSync = true;
+        }
     };
 }
 

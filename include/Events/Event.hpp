@@ -7,17 +7,18 @@ namespace Scramble::Events
     {
         None = 0,
 
+        KeyAction,
+        MouseAction,
+
         WindowClose, 
         WindowResize, 
         WindowMoved,
         WindowFocus, 
         WindowLostFocus, 
 
-        KeyAction,
         KeyPressed, 
         KeyReleased,
 
-        MouseAction,
         MouseButtonPressed, 
         MouseButtonReleased, 
         MouseMoved, 

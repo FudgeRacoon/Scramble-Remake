@@ -20,10 +20,10 @@ void InputManager::OnStartUp()
 {
     S_INFO("InputManager is starting up...");
 
-    keyboardState = KeyListener::GetKeyboardState();
+    keyboardState = KeyListener::GetInstance()->GetKeyboardState();
     prevKeyboardState = new byte[512];
 
-    mouseState = MouseListener::GetMouseState(
+    mouseState = MouseListener::GetInstance()->GetMouseState(
         mousePosX, 
         mousePosY, 
         mouseOffsetX, 

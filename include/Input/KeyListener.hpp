@@ -8,26 +8,28 @@
 #include "Core/Common/Types.hpp"
 #include "Core/Logger/Logger.hpp"
 
+#include "Events/KeyEvent.hpp"
+#include "Events/EventHandler.hpp"
+using namespace Scramble::Events;
+
 namespace Scramble::Input
 {
-    class KeyListener
+    class KeyListener : public EventHandler
     {
     private:
-        static byte* keyboardStates;
+        byte* keyboardStates; 
 
     private:
-        KeyListener() = delete;
-        ~KeyListener() = delete;    
+        KeyListener();
 
     public:
-        static void OnStartUp();
-        static void OnShutDown();
+        ~KeyListener();
 
     public:
-        static const byte* GetKeyboardState();
+        static KeyListener* GetInstance();
 
     public:
-        static void KeyCallback(GLFWwindow* handle, int key, int scancode, int action, int mods);
+        const byte* GetKeyboardState();
     };
 }
 
