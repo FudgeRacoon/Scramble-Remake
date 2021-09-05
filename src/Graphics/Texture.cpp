@@ -7,9 +7,9 @@ Texture::Texture(const char* filepath)
 
     this->pixels = (U32*)this->nativeTexture->GetRawData();
 
-    this->channels = this->nativeTexture->GetPitch();
     this->width = this->nativeTexture->GetWidth();
     this->height = this->nativeTexture->GetHeight();
+    this->channels = this->nativeTexture->GetPitch() / this->width;
 }
 Texture::Texture(U32 width, U32 height, U32 color)
 {
@@ -17,14 +17,23 @@ Texture::Texture(U32 width, U32 height, U32 color)
 
     this->pixels = (U32*)this->nativeTexture->GetRawData();
 
-    this->channels = this->nativeTexture->GetPitch();
     this->width = this->nativeTexture->GetWidth();
     this->height = this->nativeTexture->GetHeight();
+    this->channels = this->nativeTexture->GetPitch() / this->width;
 }
 
 Texture::~Texture()
 {
     delete this->nativeTexture;
+}
+
+bool Texture::operator ==(Texture texture)
+{
+    return this->nativeTexture->GetNativeId() == texture.nativeTexture->GetNativeId();
+}
+bool Texture::operator !=(Texture texture)
+{
+    return this->nativeTexture->GetNativeId() != texture.nativeTexture->GetNativeId();
 }
 
 const U32* Texture::GetPixels()

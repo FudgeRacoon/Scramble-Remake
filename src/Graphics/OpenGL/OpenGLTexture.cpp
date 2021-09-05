@@ -3,16 +3,15 @@ using namespace Scramble::Graphics;
 
 OpenGLTexture::OpenGLTexture(const char* filepath)
 {
-    int width, height, pitch;
+    int width, height, channels;
     
-    stbi_set_flip_vertically_on_load(1);
-    this->data = stbi_load(filepath, &width, &height, &pitch, 0);
+    this->data = stbi_load(filepath, &width, &height, &channels, 0);
     
     SCRAMBLE_CORE_ASSERT_LOG(this->data, "Failed to load image");
 
     this->width = width;
     this->height = height;
-    this->pitch = pitch;
+    this->pitch = channels * width;
 
     byte* topData = this->data;
     byte* bottomData = this->data + ((this->height - 1) * this->pitch);
@@ -43,7 +42,7 @@ OpenGLTexture::OpenGLTexture(const char* filepath)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0, this->pitch == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, this->data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0, channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, this->data);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }

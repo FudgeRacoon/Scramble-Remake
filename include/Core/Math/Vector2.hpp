@@ -15,10 +15,10 @@ namespace Scramble
         Vector2(float x, float y);
 
     public:
-        static const Vector2 Up;
-        static const Vector2 Down;
-        static const Vector2 Left;
-        static const Vector2 Right;
+        static Vector2 Up;
+        static Vector2 Down;
+        static Vector2 Left;
+        static Vector2 Right;
 
     public:
         Vector2 operator +(Vector2 v);

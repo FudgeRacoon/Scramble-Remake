@@ -1,21 +1,25 @@
 #include "Core/Time/Time.hpp"
 using namespace Scramble;
 
-Time::TimePoint Time::startTime;
-Time::TimePoint Time::currentTime;
-Time::TimePoint Time::previousTime;
+Time::TimePoint Time::initlizationTime;
+Time::TimePoint Time::currentFrameTime;
+Time::TimePoint Time::previousFrameTime;
 
-double Time::deltaTime = 0.0;
-double Time::elapsedTime = 0.0;
-double Time::elapsedUnscaledTime = 0.0;
+F64 Time::deltaTime = 0.0;
+F64 Time::elapsedTime = 0.0;
+F64 Time::elapsedUnscaledTime = 0.0;
 
-float Time::timeScale = 1.0;
+F32 Time::timeScale = 1.0;
+
+#include "Core/Logger/Logger.hpp"
 
 void Time::OnStartUp()
 {
-    startTime = HighResClock::now();
-    currentTime = HighResClock::now();
-    previousTime = HighResClock::now();
+    S_INFO("Time is starting up...");
+
+    initlizationTime = HighResClock::now();
+    currentFrameTime = HighResClock::now();
+    previousFrameTime = HighResClock::now();
 }
 void Time::OnUpdate()
 {
@@ -23,43 +27,39 @@ void Time::OnUpdate()
 
     if(timeScale > 0.0)
     {
-        currentTime = HighResClock::now();
+        currentFrameTime = HighResClock::now();
 
-        Nanoseconds delta = std::chrono::duration_cast<Nanoseconds>(
-            currentTime - previousTime
-        );
-        Nanoseconds elapsed = std::chrono::duration_cast<Nanoseconds>(
-            currentTime - startTime
-        );
-
+        Nanoseconds delta = currentFrameTime - previousFrameTime;
+        Nanoseconds elapsed = currentFrameTime - initlizationTime; 
+        
         deltaTime = delta.count() * (1e-9) * timeScale;
         elapsedTime += deltaTime;
-        elapsedUnscaledTime += elapsed.count() * (1e-9);
+        elapsedUnscaledTime = elapsed.count() * (1e-9);
     }
 }
 void Time::OnFrameEnd()
 {
-    previousTime = currentTime;
+    previousFrameTime = currentFrameTime;
 }
 
-double Time::GetDeltaTime()
+F64 Time::GetDeltaTime()
 {
     return deltaTime;
 }
-double Time::GetElapsedTime()
+F64 Time::GetElapsedTime()
 {
     return elapsedTime;
 }
-double Time::GetElapsedUnscaledTime()
+F64 Time::GetElapsedUnscaledTime()
 {
     return elapsedUnscaledTime;
 }
 
-float Time::GetTimeScale()
+F32 Time::GetTimeScale()
 {
     return timeScale;
 }
-void Time::SetTimeScale(float scale)
+void Time::SetTimeScale(F32 scale)
 {
     timeScale = scale;
 }

@@ -186,7 +186,7 @@ Matrix4 Matrix4::Rotate(float angle, Vector3 axis)
         m(2,0) = sin(angle);
         m(2,2) = cos(angle);
     }
-    else if(axis.x == 0.0f && axis.y == 0.0f, axis.z == -1.0f)
+    else if(axis.x == 0.0f && axis.y == 0.0f, axis.z == 1.0f)
     {
         m(0,0) = cos(angle);
         m(0,1) = -sin(angle);

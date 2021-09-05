@@ -9,11 +9,12 @@ namespace Scramble
 {
     class Timer
     {
-    using Seconds = std::chrono::duration<I64, std::ratio<1, 1>>;
-    using Milliseconds = std::chrono::duration<double, std::ratio<1, 1000>>;
-    using Nanoseconds = std::chrono::duration<double, std::ratio<1, 1000000000>>;
-    using HighResClock = std::chrono::high_resolution_clock;
-    using TimePoint = std::chrono::time_point<HighResClock, Nanoseconds>;
+    typedef std::chrono::duration<I64, std::ratio<1, 1>> Seconds;
+    typedef std::chrono::duration<I64, std::ratio<1, 1000>> Milliseconds;
+    typedef std::chrono::duration<I64, std::ratio<1, 1000000000>> Nanoseconds;
+
+    typedef std::chrono::high_resolution_clock HighResClock;
+    typedef std::chrono::time_point<HighResClock, Nanoseconds> TimePoint;
 
     private:
         TimePoint startTime;
@@ -29,8 +30,8 @@ namespace Scramble
 
     public:
         I64 EvaluateInSeconds();
-        double EvaluateInMilliseconds();
-        double EvaluateInNanoseconds();
+        I64 EvaluateInMilliseconds();
+        I64 EvaluateInNanoseconds();
     };
 }
 

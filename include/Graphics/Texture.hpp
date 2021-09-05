@@ -1,9 +1,14 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
+#include "Core/Common/Types.hpp"
+
 #include "OpenGL/OpenGLTexture.hpp"
 
-#include "Core/Common/Types.hpp"
+namespace Scramble
+{
+    class ResourceManager;
+}
 
 namespace Scramble::Graphics
 {
@@ -20,12 +25,16 @@ namespace Scramble::Graphics
     private:
         OpenGLTexture* nativeTexture;
 
-    public:
+    private:
         Texture(const char* filepath);
         Texture(U32 width, U32 height, U32 color);
         
-    public:    
+    private:    
         ~Texture();
+
+    public:
+        bool operator ==(Texture texture);
+        bool operator !=(Texture texture);
 
     public:
         const U32* GetPixels();
@@ -37,6 +46,8 @@ namespace Scramble::Graphics
 
     public:
         const OpenGLTexture* GetNativeTexture();
+
+    friend ResourceManager;
     };
 }
 

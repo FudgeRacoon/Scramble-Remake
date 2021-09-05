@@ -5,8 +5,9 @@ byte* KeyListener::keyboardStates = nullptr;
 
 void KeyListener::OnStartUp()
 {
+    S_INFO("KeyListener is starting up...");
+
     keyboardStates = new byte[512];
-    
     memset(keyboardStates, 0, 512);
 }
 void KeyListener::OnShutDown()
@@ -14,11 +15,8 @@ void KeyListener::OnShutDown()
     delete[] keyboardStates;
 }
 
-const byte* KeyListener::GetKeyboardState(I32* length)
+const byte* KeyListener::GetKeyboardState()
 {
-    if(length)
-        *length = 512;
-
     return keyboardStates;
 }
 

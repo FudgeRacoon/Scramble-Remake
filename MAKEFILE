@@ -5,9 +5,8 @@ CC_FLAGS = -std=c++17 -w
 SOURCE_DIR += src/Core/Geometry/*.cpp src/Core/Math/*.cpp src/Core/Time/*.cpp src/Core/*.cpp
 SOURCE_DIR += src/Graphics/OpenGL/Debug/*.cpp src/Graphics/OpenGL/*.cpp src/Graphics/*.cpp 
 SOURCE_DIR += src/Input/*.cpp
-SOURCE_DIR += src/Runtime/*.cpp
-SOURCE_DIR += src/Scene/*.cpp
-# SOURCE_DIR += src/Utils/*.cpp
+SOURCE_DIR += src/Scene/Components/*.cpp src/Scene/*.cpp
+SOURCE_DIR += src/Utils/*.cpp
 SOURCE_DIR += src/*.cpp
 
 SOURCE_DIR += vendor/stb_image/*.cpp

@@ -3,6 +3,7 @@
 
 #include <string.h>
 
+#include "Core/Common/Types.hpp"
 #include "Core/Geometry/Rect.hpp"
 #include "Core/Math/Vector2.hpp"
 #include "Core/Math/Vector2.hpp"
@@ -10,32 +11,39 @@
 #include "Graphics/Texture.hpp"
 using namespace Scramble;
 
+namespace Scamble
+{
+    class ResourceManager;
+}
+
 namespace Scramble::Graphics
 {   
     class Sprite
     {
     private:
         Rect rect;
-        Texture* texture;
-        Vector2* textureCoords;
+        WeakPtr<Texture> texture;
+        Vector2* textureCoordinates;
 
-    public:
-        Sprite(Texture* texture);
-        Sprite(Texture* texture, Rect rect);
-        Sprite(Texture* texture, Rect rect, Vector2* textureCoords);
+    private:
+        Sprite(std::weak_ptr<Texture> texture);
+        Sprite(std::weak_ptr<Texture> texture, Rect rect);
+        Sprite(std::weak_ptr<Texture> texture, Rect rect, Vector2* textureCoordinates);
     
-    public:
+    private:
         ~Sprite();
 
     public:
         Rect GetRect();
-        Texture* GetTexture();
-        Vector2* GetTextureCoords();
+        WeakPtr<Texture> GetTexture();
+        Vector2* GetTextureCoordinates();
 
     public:
         void SetRect(Rect rect);
-        void SetTexture(Texture* texture);
-        void SetTextureCoords(Vector2* textureCoords);
+        void SetTexture(WeakPtr<Texture> texture);
+        void SetTextureCoordinates(Vector2* textureCoordinates);
+
+    friend ResourceManager;
     };
 }
 

@@ -9,32 +9,30 @@ byte* MouseListener::mouseState = nullptr;
 
 void MouseListener::OnStartUp()
 {
-    MouseListener::x = new I32; MouseListener::y = new I32;
-    MouseListener::xOffset = new I32; MouseListener::yOffset = new I32;
-    MouseListener::mouseState = new byte[8];
+    S_INFO("MouseListener is starting up...");
 
-    *MouseListener::x = 0; *MouseListener::y = 0;
-    *MouseListener::xOffset = 0; *MouseListener::yOffset = 0;
-    
+    MouseListener::x = new I32(0); 
+    MouseListener::y = new I32(0);
+    MouseListener::xOffset = new I32(0); 
+    MouseListener::yOffset = new I32(0);
+    MouseListener::mouseState = new byte[8];
     memset(MouseListener::mouseState, 0, 8);
 }
 void MouseListener::OnShutDown()
 {
-    delete MouseListener::x; delete MouseListener::y;
-    delete MouseListener::xOffset; delete MouseListener::yOffset;
+    delete MouseListener::x; 
+    delete MouseListener::y;
+    delete MouseListener::xOffset; 
+    delete MouseListener::yOffset;
     delete[] MouseListener::mouseState;
 }
 
-const byte* MouseListener::GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset, I32* length)
+const byte* MouseListener::GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset)
 {
     x = MouseListener::x; 
     y = MouseListener::y;
-    
     xOffset = MouseListener::xOffset; 
     yOffset = MouseListener::yOffset;
-
-    if(length)
-        *length = 8;
 
     return MouseListener::mouseState;
 }

@@ -9,22 +9,24 @@ namespace Scramble
 {
     class Time
     {
-    using Nanoseconds = std::chrono::duration<I64, std::ratio<1, 1000000000>>;
-    using HighResClock = std::chrono::high_resolution_clock;
-    using TimePoint = std::chrono::time_point<HighResClock, Nanoseconds>;
+    typedef std::chrono::seconds Seconds;
+    typedef std::chrono::nanoseconds Nanoseconds;
+    
+    typedef std::chrono::high_resolution_clock HighResClock;
+    typedef std::chrono::time_point<HighResClock,Nanoseconds > TimePoint;
 
     private:
-        static TimePoint startTime;
-        static TimePoint currentTime;
-        static TimePoint previousTime;
+        static TimePoint initlizationTime;
+        static TimePoint currentFrameTime;
+        static TimePoint previousFrameTime;
 
     private:
-        static double deltaTime;
-        static double elapsedTime;
-        static double elapsedUnscaledTime;
+        static F64 deltaTime;
+        static F64 elapsedTime;
+        static F64 elapsedUnscaledTime;
 
     private:
-        static float timeScale;
+        static F32 timeScale;
 
     private:
         Time() = delete;
@@ -35,14 +37,13 @@ namespace Scramble
         static void OnUpdate();
         static void OnFrameEnd();
 
-    public:
-        static double GetDeltaTime();
-        static double GetElapsedTime();
-        static double GetElapsedUnscaledTime();
+        static F64 GetDeltaTime();
+        static F64 GetElapsedTime();
+        static F64 GetElapsedUnscaledTime();
 
     public:
-        static float GetTimeScale();
-        static void SetTimeScale(float scale);
+        static F32 GetTimeScale();
+        static void SetTimeScale(F32 scale);
     };
 }
 

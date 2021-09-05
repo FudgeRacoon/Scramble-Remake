@@ -1,5 +1,5 @@
-#ifndef RUNTIMEINSTANCE_HPP
-#define RUNTIMEINSTANCE_HPP
+#ifndef RUNTIME_INSTANCE_HPP
+#define RUNTIME_INSTANCE_HPP
 
 namespace Scramble
 {

@@ -1,5 +1,5 @@
-#ifndef LocalTimeDate_HPP
-#define LocalTimeDate_HPP
+#ifndef LOCAL_TIME_DATE_HPP
+#define LOCAL_TIME_DATE_HPP
 
 #include <time.h>
 #include <string>

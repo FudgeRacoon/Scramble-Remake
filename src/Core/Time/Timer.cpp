@@ -18,7 +18,7 @@ I64 Timer::EvaluateInSeconds()
 
     return elapsed.count();
 }
-double Timer::EvaluateInMilliseconds()
+I64 Timer::EvaluateInMilliseconds()
 {
     Milliseconds elapsed = std::chrono::duration_cast<Milliseconds>(
         HighResClock::now() - this->startTime
@@ -26,11 +26,9 @@ double Timer::EvaluateInMilliseconds()
 
     return elapsed.count();
 }   
-double Timer::EvaluateInNanoseconds()
+I64 Timer::EvaluateInNanoseconds()
 {
-    Nanoseconds elapsed = std::chrono::duration_cast<Nanoseconds>(
-        HighResClock::now() - this->startTime
-    );
+    Nanoseconds elapsed = HighResClock::now() - this->startTime;
 
     return elapsed.count();
 }

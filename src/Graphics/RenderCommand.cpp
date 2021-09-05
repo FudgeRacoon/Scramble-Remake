@@ -3,11 +3,13 @@ using namespace Scramble::Graphics;
 
 void RenderCommand::OnStartUp(U32 x, U32 y, U32 width, U32 height)
 {
+    S_INFO("RenderCommand is starting up...");
+
     glEnable(GL_BLEND); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     glViewport(x, y, width, height);
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.08, 0.08, 0.08, 1.0);
 
     glDrawBuffer(GL_BACK);
 }

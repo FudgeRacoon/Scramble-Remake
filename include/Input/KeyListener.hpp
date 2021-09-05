@@ -6,6 +6,7 @@
 #include "GLFW/glfw3.h"
 
 #include "Core/Common/Types.hpp"
+#include "Core/Logger/Logger.hpp"
 
 namespace Scramble::Input
 {
@@ -23,7 +24,7 @@ namespace Scramble::Input
         static void OnShutDown();
 
     public:
-        static const byte* GetKeyboardState(I32* length = nullptr);
+        static const byte* GetKeyboardState();
 
     public:
         static void KeyCallback(GLFWwindow* handle, int key, int scancode, int action, int mods);

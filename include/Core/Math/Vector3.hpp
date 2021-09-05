@@ -16,11 +16,11 @@ namespace Scramble
         Vector3(float x, float y, float z);
 
     public:
-        static const Vector3 Up;
-        static const Vector3 Down; 
-        static const Vector3 Left; 
-        static const Vector3 Right;        
-        static const Vector3 Forward;
+        static Vector3 Up;
+        static Vector3 Down; 
+        static Vector3 Left; 
+        static Vector3 Right;        
+        static Vector3 Forward;
 
     public:
         Vector3 operator +(Vector3 v);

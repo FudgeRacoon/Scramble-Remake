@@ -1,6 +1,12 @@
 #include "Core/Geometry/Rect.hpp"
 using namespace Scramble;
 
+Rect::Rect(Vector3 position, Vector2 size)
+{
+    this->x = position.x; this->y = position.y;
+    this->width = size.x; this->height = size.y;
+    this->xMax = this->x + this->width; this->yMax = this->y - this->height;
+}
 Rect::Rect(float x, float y, float width, float height)
 {   
     this->x = x; this->y = y;
@@ -16,6 +22,14 @@ float Rect::GetY()
 {
     return this->y;
 }
+float Rect::GetXMax()
+{
+    return this->xMax;
+}
+float Rect::GetYMax()
+{
+    return this->yMax;
+}   
 float Rect::GetWidth()
 {
     return this->width;

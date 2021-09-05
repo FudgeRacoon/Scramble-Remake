@@ -14,11 +14,14 @@ namespace Scramble
 
     public:
         Rect() = default;
+        Rect(Vector3 position, Vector2 size);
         Rect(float x, float y, float width, float height);
 
     public:
         float GetX();
         float GetY();
+        float GetXMax();
+        float GetYMax();
         float GetWidth();
         float GetHeight();
         Vector2 GetCenter();

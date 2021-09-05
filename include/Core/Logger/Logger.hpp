@@ -121,6 +121,12 @@ namespace Scramble
             PrintString(LoggerPriority::LOGGER_FATAL, message, args...);
         }
     };
+
+    #define S_INFO(msg, ...) Scramble::Logger::LogInfo(msg, ##__VA_ARGS__);
+    #define S_DEBUG(msg, ...) Scramble::Logger::LogDebug(msg, ##__VA_ARGS__);
+    #define S_WARN(msg, ...) Scramble::Logger::LogWarning(msg, ##__VA_ARGS__);
+    #define S_ERROR(msg, ...) Scramble::Logger::LogError(msg, ##__VA_ARGS__);
+    #define S_FATAL(msg, ...) Scramble::Logger::LogFatal(msg, ##__VA_ARGS__);
 }
 
 #endif

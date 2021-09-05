@@ -17,12 +17,13 @@ namespace Scramble
     class Window
     {
     public:
-        using NativeWindowHandle = GLFWwindow;
-        using NativeWindowCursor = GLFWcursor;
+        typedef GLFWwindow NativeWindowHandle;
+        typedef GLFWcursor NativeWindowCursor;
         
         typedef void(*WindowCloseCallback)(NativeWindowHandle*);
         typedef void(*WindowPosCallback)(NativeWindowHandle*, int, int);
         typedef void(*WindowResizeCallback)(NativeWindowHandle*, int, int);
+
         typedef void(*WindowKeyActionCallback)(NativeWindowHandle*, int, int, int, int);
         typedef void(*WindowMouseMotionCallback)(NativeWindowHandle*, double, double);
         typedef void(*WindowMouseActionCallback)(NativeWindowHandle*, int, int, int);
@@ -82,6 +83,8 @@ namespace Scramble
         void SetOnWindowClose(WindowCloseCallback callbackFunc);
         void SetOnWindowPos(WindowPosCallback callbackFunc);
         void SetOnWindowResize(WindowResizeCallback callbackFunc);
+
+    public:
         void SetOnKeyAction(WindowKeyActionCallback callbackFunc);
         void SetOnMouseMotion(WindowMouseMotionCallback callbackFunc);
         void SetOnMouseAction(WindowMouseActionCallback callbackFunc);

@@ -6,6 +6,8 @@ Window::NativeWindowHandle* GraphicsContext::handle = nullptr;
 
 void GraphicsContext::OnStartUp(Window::NativeWindowHandle* handle)
 { 
+    S_INFO("GraphicsContext is starting up...");
+
     GraphicsContext::handle = handle;
     glfwMakeContextCurrent(GraphicsContext::handle);
 

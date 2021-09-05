@@ -5,11 +5,9 @@ using namespace Scramble::Input;
 
 const byte* InputManager::keyboardState = nullptr;
 byte* InputManager::prevKeyboardState = nullptr;
-I32 InputManager::keyboardStateLength = 0;
 
 const byte* InputManager::mouseState = nullptr;
 byte* InputManager::prevMouseState = nullptr;
-I32 InputManager::mouseStateLength = 0;
 
 I32* InputManager::mousePosX = nullptr;
 I32* InputManager::mousePosY = nullptr;
@@ -20,22 +18,23 @@ I32* InputManager::mouseOffsetY = nullptr;
 
 void InputManager::OnStartUp()
 {
-    keyboardState = KeyListener::GetKeyboardState(&keyboardStateLength);
-    prevKeyboardState = new byte[keyboardStateLength];
+    S_INFO("InputManager is starting up...");
+
+    keyboardState = KeyListener::GetKeyboardState();
+    prevKeyboardState = new byte[512];
 
     mouseState = MouseListener::GetMouseState(
         mousePosX, 
         mousePosY, 
         mouseOffsetX, 
-        mouseOffsetY, 
-        &mouseStateLength
+        mouseOffsetY
     );
-    prevMouseState = new byte[mouseStateLength];
+    prevMouseState = new byte[8];
 }
 void InputManager::OnFrameEnd()
 {
-    memcpy(prevKeyboardState, keyboardState, keyboardStateLength);
-    memcpy(prevMouseState, mouseState, mouseStateLength);
+    memcpy(prevKeyboardState, keyboardState, 512);
+    memcpy(prevMouseState, mouseState, 8);
 
     prevMousePosX = mousePosX;
     prevMousePosY = mousePosY;

@@ -1,11 +1,11 @@
 #include "Core/Math/Vector3.hpp"
 using namespace Scramble;
 
-const Vector3 Vector3::Up = Vector3(0.0, 1.0, 0.0);
-const Vector3 Vector3::Down = Vector3(0.0, -1.0, 0.0);
-const Vector3 Vector3::Left = Vector3(-1.0, 0.0, 0.0);
-const Vector3 Vector3::Right = Vector3(1.0, 0.0, 0.0);
-const Vector3 Vector3::Forward = Vector3(0.0, 0.0, 1.0);
+Vector3 Vector3::Up = Vector3(0.0, 1.0, 0.0);
+Vector3 Vector3::Down = Vector3(0.0, -1.0, 0.0);
+Vector3 Vector3::Left = Vector3(-1.0, 0.0, 0.0);
+Vector3 Vector3::Right = Vector3(1.0, 0.0, 0.0);
+Vector3 Vector3::Forward = Vector3(0.0, 0.0, 1.0);
 
 Vector3::Vector3()
     :x(0.0), y(0.0), z(0.0) {}

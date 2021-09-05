@@ -17,9 +17,9 @@ namespace Scramble::Scene
         Vector3 direction;
 
     public:
-        F32 viewportSize;
         Vector3 position;
         Vector3 rotation;
+        F32 orthographicSize;
 
     public:
         F32 near, far;

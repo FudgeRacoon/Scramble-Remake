@@ -6,14 +6,17 @@
 #include "GLFW/glfw3.h"
 
 #include "Core/Common/Types.hpp"
+#include "Core/Logger/Logger.hpp"
 
 namespace Scramble::Input
 {
     class MouseListener
     {
     private:
-        static I32* x; static I32* y;
-        static I32* xOffset; static I32* yOffset;
+        static I32* x; 
+        static I32* y;
+        static I32* xOffset; 
+        static I32* yOffset;
         static byte* mouseState;
 
     private:
@@ -25,7 +28,7 @@ namespace Scramble::Input
         static void OnShutDown();
 
     public:
-        static const byte* GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset, I32* length = nullptr);
+        static const byte* GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset);
 
     public:
         static void MousePosCallback(GLFWwindow* handle, double x, double y);

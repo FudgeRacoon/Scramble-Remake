@@ -5,22 +5,22 @@ Camera::Camera()
 {
     this->direction = Vector3::Forward;
 
-    this->viewportSize = 1.0;
     this->position = Vector3(0.0, 0.0, 0.0);
     this->rotation = Vector3(0.0, 0.0, 0.0);
+    this->orthographicSize = 1.0;
 
     I32 width = RenderCommand::GetViewport().GetWidth();
     I32 height = RenderCommand::GetViewport().GetHeight();
 
     this->near = 100.0f; this->far = -100.0f;
-    this->left = -width; this->right = width;
-    this->top = height; this->bottom = -height;
+    this->left = -width / 2; this->right = width / 2;
+    this->top = height / 2; this->bottom = -height / 2;
 }
 Camera::Camera(Vector3 position)
 {
     this->direction = Vector3::Forward;
 
-    this->viewportSize = 1.0;
+    this->orthographicSize = 1.0;
     this->position = position;
     this->rotation = Vector3(0.0, 0.0, 0.0);
 
@@ -51,10 +51,10 @@ Matrix4 Camera::GetProjectionMatrix()
 {
     return Matrix4::Orthographic
     (
-        this->left   * this->viewportSize, 
-        this->right  * this->viewportSize, 
-        this->bottom * this->viewportSize, 
-        this->top    * this->viewportSize, 
+        this->left   * this->orthographicSize, 
+        this->right  * this->orthographicSize, 
+        this->bottom * this->orthographicSize, 
+        this->top    * this->orthographicSize, 
         this->near, 
         this->far
     );

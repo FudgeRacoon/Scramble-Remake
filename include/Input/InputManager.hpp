@@ -17,17 +17,18 @@ namespace Scramble::Input
     private:
         static const byte* keyboardState;
         static byte* prevKeyboardState;
-        static I32 keyboardStateLength;
 
     private:
         static const byte* mouseState;
         static byte* prevMouseState;
-        static I32 mouseStateLength;
 
     private:
-        static I32* mousePosX; static I32* mousePosY;
-        static I32* prevMousePosX; static I32* prevMousePosY;
-        static I32* mouseOffsetX; static I32* mouseOffsetY;
+        static I32* mousePosX; 
+        static I32* mousePosY;
+        static I32* prevMousePosX; 
+        static I32* prevMousePosY;
+        static I32* mouseOffsetX; 
+        static I32* mouseOffsetY;
 
     private:
         InputManager() = delete;

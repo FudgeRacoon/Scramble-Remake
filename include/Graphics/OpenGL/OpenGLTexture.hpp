@@ -27,6 +27,8 @@ namespace Scramble::Graphics
     public:
         OpenGLTexture(const char* filepath);
         OpenGLTexture(U32 width, U32 height, U32 color);
+
+    public:
         ~OpenGLTexture();
 
     public:

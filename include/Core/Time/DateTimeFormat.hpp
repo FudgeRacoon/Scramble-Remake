@@ -1,5 +1,5 @@
-#ifndef DATETIMEFORMAT_HPP
-#define DATETIMEFORMAT_HPP
+#ifndef DATE_TIME_FORMAT_HPP
+#define DATE_TIME_FORMAT_HPP
 
 namespace Scramble
 {

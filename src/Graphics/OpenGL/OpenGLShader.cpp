@@ -1,7 +1,7 @@
-#include "Graphics/OpenGL/OpenGLShaderProgram.hpp"
+#include "Graphics/OpenGL/OpenGLShader.hpp"
 using namespace Scramble::Graphics;
 
-OpenGLShaderProgram::OpenGLShaderProgram(const char* vertexFilepath, const char* fragmentFilepath)
+OpenGLShader::OpenGLShader(const char* vertexFilepath, const char* fragmentFilepath)
 {
     this->shaderProgramId = glCreateProgram();
 
@@ -17,7 +17,7 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char* vertexFilepath, const char*
     glLinkProgram(this->shaderProgramId);
     glValidateProgram(this->shaderProgramId);
 
-    int result;
+    I32 result;
     char buffer[512];
     glGetProgramiv(this->shaderProgramId, GL_LINK_STATUS, &result);
 
@@ -28,12 +28,13 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char* vertexFilepath, const char*
         return;
     }
 }
-OpenGLShaderProgram::~OpenGLShaderProgram()
+
+OpenGLShader::~OpenGLShader()
 {
     glDeleteProgram(this->shaderProgramId);
 }
 
-std::string OpenGLShaderProgram::ParseShader(const char* filepath)
+std::string OpenGLShader::ParseShader(const char* filepath)
 {
     std::fstream file(filepath, std::ios::in);
 
@@ -51,7 +52,7 @@ std::string OpenGLShaderProgram::ParseShader(const char* filepath)
     
     return ss.str();
 }
-void OpenGLShaderProgram::CreateShader(const char* filepath, int shaderType)
+void OpenGLShader::CreateShader(const char* filepath, I32 shaderType)
 {
     std::string source = ParseShader(filepath);
     if(source.empty())
@@ -59,11 +60,11 @@ void OpenGLShaderProgram::CreateShader(const char* filepath, int shaderType)
 
     const char* sourceCStr = source.c_str();
 
-    int shader = glCreateShader(shaderType);
+    I32 shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &sourceCStr, nullptr);
     glCompileShader(shader);
 
-    int result;
+    I32 result;
     char buffer[512];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 
@@ -81,52 +82,55 @@ void OpenGLShaderProgram::CreateShader(const char* filepath, int shaderType)
     glDeleteShader(shader);
 }
 
-void OpenGLShaderProgram::SetBool(const char* varName, int value) const
+void OpenGLShader::SetInt(const char* varName, I32 value) const
 {
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
     glUniform1i(uniformId, value);
 }
-void OpenGLShaderProgram::SetInt(const char* varName, int value) const
+void OpenGLShader::SetBool(const char* varName, I32 value) const
 {
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
     glUniform1i(uniformId, value);
 }
-void OpenGLShaderProgram::SetFloat(const char* varName, float value) const
+void OpenGLShader::SetFloat(const char* varName, F32 value) const
 {
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
     glUniform1f(uniformId, value);
 }
-void OpenGLShaderProgram::SetVec2i(const char* varName, Vector2 v) const
+
+void OpenGLShader::SetVec2i(const char* varName, I32 x, I32 y) const
 {
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
-    glUniform2i(uniformId, (int)v.x, (int)v.y);
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    glUniform2i(uniformId, x, y);
 }
-void OpenGLShaderProgram::SetVec2f(const char* varName, Vector2 v) const
+void OpenGLShader::SetVec2f(const char* varName, F32 x, F32 y) const
 {
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
-    glUniform2f(uniformId, v.x, v.y);
-}
-void OpenGLShaderProgram::SetVec4i(const char* varName, Vector4 v) const
-{
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
-    glUniform4i(uniformId, (int)v.x, (int)v.y, (int)v.z, (int)v.w);
-}
-void OpenGLShaderProgram::SetVec4f(const char* varName, Vector4 v) const
-{
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
-    glUniform4f(uniformId, v.x, v.y, v.z, v.w);
-}
-void OpenGLShaderProgram::SetMat4(const char* varName, Matrix4 m) const
-{
-    int uniformId = glGetUniformLocation(this->shaderProgramId, varName);
-    glUniformMatrix4fv(uniformId, 1, false, m.GetRawData());
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    glUniform2f(uniformId, x, y);
 }
 
-void OpenGLShaderProgram::Bind() const
+void OpenGLShader::SetVec4i(const char* varName, I32 x, I32 y, I32 z, I32 w) const
+{
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    glUniform4i(uniformId, x, y, z, w);
+}
+void OpenGLShader::SetVec4f(const char* varName, F32 x, F32 y, F32 z, F32 w) const
+{
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    glUniform4f(uniformId, x, y, z, w);
+}
+
+void OpenGLShader::SetMat4(const char* varName, const float* data) const
+{
+    I32 uniformId = glGetUniformLocation(this->shaderProgramId, varName);
+    glUniformMatrix4fv(uniformId, 1, false, data);
+}
+
+void OpenGLShader::Bind() const
 {
     glUseProgram(this->shaderProgramId);
 }
-void OpenGLShaderProgram::UnBind() const
+void OpenGLShader::UnBind() const
 {
     glUseProgram(0);
 }
