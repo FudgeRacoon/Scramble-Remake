@@ -44,9 +44,9 @@ namespace Scramble
         void OnUpdate() override
         {
             if(InputManager::GetKey(KeyCode::KEY_RIGHT))
-                position += Vector3(200, 0, 0) * Time::GetDeltaTime();
+                position += Vector3::Right * 200 * Time::GetDeltaTime();
             if(InputManager::GetKey(KeyCode::KEY_LEFT))
-                position += Vector3(-200, 0, 0) * Time::GetDeltaTime();
+                position += Vector3::Left * 200 * Time::GetDeltaTime();
             if(InputManager::GetKey(KeyCode::KEY_UP))
                 position += Vector3::Up * 200.0 * Time::GetDeltaTime();
             if(InputManager::GetKey(KeyCode::KEY_DOWN))

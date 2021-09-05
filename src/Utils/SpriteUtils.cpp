@@ -25,10 +25,10 @@ void SpriteUtils::SliceSprite(WeakPtr<Sprite> sprite, std::string name, I32 spri
             F32 xTop = (currentWidth + spriteWidth) / width;
             F32 yTop = ((height - currentHeight) + spriteHeight) / height;
 
-            texCoords[0] = Vector2(xTop, yBottom);
-            texCoords[1] = Vector2(xBottom, yBottom);
-            texCoords[2] = Vector2(xBottom, yTop);
-            texCoords[3] = Vector2(xTop, yTop);
+            texCoords[0] = Vector2(xBottom, yBottom);
+            texCoords[1] = Vector2(xTop, yBottom);
+            texCoords[2] = Vector2(xTop, yTop);
+            texCoords[3] = Vector2(xBottom, yTop);
 
             std::string spriteName = name + "_" + std::to_string(counter++);
 

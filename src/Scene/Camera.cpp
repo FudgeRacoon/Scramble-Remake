@@ -13,7 +13,7 @@ Camera::Camera()
     I32 height = RenderCommand::GetViewport().GetHeight();
 
     this->near = 100.0f; this->far = -100.0f;
-    this->left = -width / 2; this->right = width / 2;
+    this->left = width / 2; this->right = -width / 2;
     this->top = height / 2; this->bottom = -height / 2;
 }
 Camera::Camera(Vector3 position)
@@ -28,7 +28,7 @@ Camera::Camera(Vector3 position)
     I32 height = RenderCommand::GetViewport().GetHeight();
 
     this->near = 100.0f; this->far = -100.0f;
-    this->left = -width; this->right = width;
+    this->left = width; this->right = -width;
     this->top = height; this->bottom = -height;
 }
 

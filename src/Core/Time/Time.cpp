@@ -33,7 +33,7 @@ void Time::OnUpdate()
         Nanoseconds elapsed = currentFrameTime - initlizationTime; 
         
         deltaTime = delta.count() * (1e-9) * timeScale;
-        elapsedTime += deltaTime;
+        elapsedTime = elapsed.count() * (1e-9) * timeScale;
         elapsedUnscaledTime = elapsed.count() * (1e-9);
     }
 }

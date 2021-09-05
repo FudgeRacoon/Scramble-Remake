@@ -4,11 +4,9 @@ using namespace Scramble;
 Window::Window(const WindowProps& props)
 {
     this->title = props.title;
+    
     this->width = props.width;
     this->height = props.height;
-
-    this->apiMajorVersion = props.apiMajorVersion;
-    this->apiMinorVersion = props.apiMinorVersion;
     
     this->fullscreen = props.fullscreen;
     this->vSync = props.vSync;
@@ -24,7 +22,7 @@ void Window::Init()
 {
     if(glfwInit() != GLFW_TRUE)
     {
-        Logger::LogFatal("Failed to initialize GLFW");
+        S_FATAL("Failed to initialize GLFW");
         exit(EXIT_FAILURE);
     }
 
@@ -34,8 +32,8 @@ void Window::Init()
     glfwWindowHint(GLFW_ALPHA_BITS, 8);
 
     glfwWindowHint(GLFW_CLIENT_API , GLFW_OPENGL_API);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, this->apiMajorVersion);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, this->apiMinorVersion);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     if(this->fullscreen)
@@ -69,7 +67,7 @@ void Window::Init()
     
     if(!this->windowHandle)
     {
-        Logger::LogFatal("Failed to create a GLFW window");       
+        S_FATAL("Failed to create a GLFW window");       
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -84,17 +82,16 @@ void Window::Init()
 void Window::ShutDown()
 {   
     glfwDestroyWindow(this->windowHandle);
-    glfwDestroyCursor(this->windowCursor);
     glfwTerminate();
 
     this->windowHandle = nullptr;
-    this->windowCursor = nullptr;
 }
 
 const char* Window::GetTitle()
 {
     return this->title;
 }
+
 U32 Window::GetX()
 {
     return this->x;
@@ -123,6 +120,7 @@ void Window::SetTitle(const char* title)
 
     glfwSetWindowTitle(this->windowHandle, this->title);
 }
+
 void Window::SetX(U32 value)
 {
     this->x = value;
@@ -182,10 +180,6 @@ void Window::SetVsync(bool value)
     else
         glfwSwapInterval(0);
 }
-void Window::SetIcon()
-{
-    
-}
 
 bool Window::IsFullscreen()
 {
@@ -200,39 +194,6 @@ bool Window::IsVsync()
     return this->vSync;
 }
 
-void Window::SetOnWindowClose(WindowCloseCallback callbackFunc)
-{
-    glfwSetWindowCloseCallback(this->windowHandle, callbackFunc);
-}
-void Window::SetOnWindowPos(WindowPosCallback callbackFunc)
-{
-    glfwSetWindowPosCallback(this->windowHandle, callbackFunc);
-}
-void Window::SetOnWindowResize(WindowResizeCallback callbackFunc)
-{
-    glfwSetWindowSizeCallback(this->windowHandle, callbackFunc);
-}
-void Window::SetOnKeyAction(WindowKeyActionCallback callbackFunc)
-{
-    glfwSetKeyCallback(this->windowHandle, callbackFunc);
-}
-void Window::SetOnMouseMotion(WindowMouseMotionCallback callbackFunc)
-{
-    glfwSetCursorPosCallback(this->windowHandle, callbackFunc);
-}
-void Window::SetOnMouseAction(WindowMouseActionCallback callbackFunc)
-{
-    glfwSetMouseButtonCallback(this->windowHandle, callbackFunc);
-}
-void Window::SetOnMouseScroll(WindowMouseScrollCallback callbackFunc)
-{
-    glfwSetScrollCallback(this->windowHandle, callbackFunc);
-}
-
-void Window::PollEvents()
-{
-    glfwPollEvents();
-}
 void Window::CloseWindow()
 {
     this->running = false;

@@ -4,6 +4,7 @@ using namespace Scramble;
 std::unique_ptr<Window> Application::windowContext;
 std::unique_ptr<RuntimeInstance> Application::runtimeContext;
 
+float counter = 0.0;
 #define SCRAMBLE_NO_DEBUG
 
 void Application::Start(RuntimeInstance* instance)
@@ -13,25 +14,17 @@ void Application::Start(RuntimeInstance* instance)
     windowContext = std::unique_ptr<Window>(new Window());
     runtimeContext = std::unique_ptr<RuntimeInstance>(instance);
 
+    Events::EventDispatcher::OnStartUp(windowContext->GetNativeHandle());
+    
+    windowContext->SetOnMouseMove([] (MouseMovedEvent* e)
+        {
+            S_DEBUG("%d %d", e->GetX(), e->GetY());
+        }
+    );
+
     Input::KeyListener::OnStartUp();
     Input::MouseListener::OnStartUp();
     Input::InputManager::OnStartUp();
-
-    windowContext->SetOnWindowClose([] (Window::NativeWindowHandle*) {
-        windowContext->CloseWindow();
-    });
-    windowContext->SetOnWindowPos([] (Window::NativeWindowHandle*, int x, int y) {
-        windowContext->SetX(x); windowContext->SetY(y);
-    });
-    windowContext->SetOnWindowResize([] (Window::NativeWindowHandle*, int width, int height) {
-        windowContext->SetWidth(width);
-        windowContext->SetHeight(height);
-    });
-    
-    windowContext->SetOnKeyAction(Input::KeyListener::KeyCallback);
-    windowContext->SetOnMouseMotion(Input::MouseListener::MousePosCallback);
-    windowContext->SetOnMouseAction(Input::MouseListener::MouseButtonCallback);
-    windowContext->SetOnMouseScroll(Input::MouseListener::MouseScrollCallback);
 
     Graphics::GraphicsContext::OnStartUp(windowContext->GetNativeHandle());
     Graphics::RenderCommand::OnStartUp(0, 0, windowContext->GetWidth(), windowContext->GetHeight());
@@ -56,7 +49,7 @@ void Application::Run()
                     S_WARN("%.2fms lag has occured.", lag * 1000.0);
             #endif
             
-            windowContext->PollEvents();
+            Events::EventDispatcher::PollEvents();
 
             Graphics::RenderCommand::Clear();
 
@@ -79,6 +72,8 @@ void Application::ShutDown()
 
     Input::KeyListener::OnShutDown(); 
     Input::MouseListener::OnShutDown();
+
+    Events::EventDispatcher::OnShutDown();
 
     windowContext.reset(nullptr);
     runtimeContext.reset(nullptr);

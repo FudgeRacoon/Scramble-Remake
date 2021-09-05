@@ -12,13 +12,19 @@ out float fTexIndex;
 uniform mat4 uViewMatrix;
 uniform mat4 uProjMatrix;
 
+vec4 NormalizeColor(vec4 color)
+{
+    return vec4(color.x / 255.0, color.y / 255.0, color.z / 255.0, color.w / 255.0);
+}
+
 void main()
 {
-    fColor = aColor;
+    fColor = NormalizeColor(aColor);
     fTexCoords = aTexCoords;
     fTexIndex = aTexIndex;
 
     vec4 transformedVertex = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    
     transformedVertex = transformedVertex * uViewMatrix;
     transformedVertex = transformedVertex * uProjMatrix;
 

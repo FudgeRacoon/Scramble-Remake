@@ -11,6 +11,7 @@
                 "${workspaceFolder}\\src\\Core\\Math\\*.cpp",
                 "${workspaceFolder}\\src\\Core\\Time\\*.cpp",
                 "${workspaceFolder}\\src\\Core\\*.cpp",
+                "${workspaceFolder}\\src\\Events\\*.cpp",
                 "${workspaceFolder}\\src\\Graphics\\OpenGL\\Debug\\*.cpp",
                 "${workspaceFolder}\\src\\Graphics\\OpenGL\\*.cpp",
                 "${workspaceFolder}\\src\\Graphics\\*.cpp",

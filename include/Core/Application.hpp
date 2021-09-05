@@ -13,6 +13,11 @@
 #include "RuntimeInstance.hpp"
 #include "Window.hpp"
 
+#include "Events/ApplicationEvent.hpp"
+#include "Events/Event.hpp"
+#include "Events/EventDispatcher.hpp"
+#include "Events/EventHandler.hpp"
+
 #include "Input/InputManager.hpp"
 #include "Input/KeyListener.hpp"
 #include "Input/MouseListener.hpp"

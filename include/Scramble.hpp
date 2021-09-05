@@ -16,6 +16,11 @@
 #include "Graphics/Sprite.hpp"
 #include "Graphics/Texture.hpp"
 
+#include "Events/ApplicationEvent.hpp"
+#include "Events/Event.hpp"
+#include "Events/EventDispatcher.hpp"
+#include "Events/EventHandler.hpp"
+
 #include "Input/InputManager.hpp"
 #include "Input/KeyCodes.hpp"
 #include "Input/KeyListener.hpp"
