@@ -56,7 +56,7 @@ float Math::Clamp(float value, float min, float max)
 }
 float Math::Lerp(float a, float b, float t)
 {
-    return a + ((b - a) * Clamp(t, 0.0, 1.0));
+    return a + (b - a) * Clamp(t, 0.0, 1.0);
 }
 float Math::RadToDegree(float value)
 {
