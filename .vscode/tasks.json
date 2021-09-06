@@ -17,6 +17,7 @@
                 "${workspaceFolder}\\src\\Graphics\\*.cpp",
                 "${workspaceFolder}\\src\\Input\\*.cpp",
                 "${workspaceFolder}\\src\\Scene\\*.cpp",
+                "${workspaceFolder}\\src\\Scene\\Components\\*.cpp",
                 "${workspaceFolder}\\src\\Utils\\*.cpp",
                 "${workspaceFolder}\\src\\*.cpp",
                 "${workspaceFolder}\\vendor\\stb_image\\*.cpp"

@@ -1,6 +1,12 @@
 #include "Scene/Registry.hpp"
 using namespace Scramble::Scene;
 
+void Registry::ForEach(Registry::CallbackFunc func)
+{
+    for(auto entity : this->entites)
+        func(entity.second);
+}
+
 Registry::EntityMap Registry::GetEntities()
 {
     return this->entites;
@@ -12,33 +18,37 @@ WeakPtr<Entity> Registry::AddEntity()
     
     std::string tag = "Entity_" + std::to_string(instanceId);
 
-    Entity* entity = new Entity(instanceId);
+    SharedPtr<Entity> entity(new Entity(instanceId), [] (Entity* entity) {delete entity;});
     entity->AddComponent<Tag>(tag);
     entity->AddComponent<Transform>(Vector3(), Vector3(), Vector3(1.0, 1.0, 1.0));
 
     entites.insert(
-        std::make_pair(instanceId, SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}))
+        std::make_pair(instanceId, entity)
     );
 
-    setupQueue.push(SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}));
-
+    setupQueue.push(entity);
+    
     S_INFO("Entity: %s has been created succesfully!", tag.c_str());
+
+    return entity;
 }
 WeakPtr<Entity> Registry::AddEntity(std::string tag)
 {
     U32 instanceId = IdGenerator();
     
-    Entity* entity = new Entity(instanceId);
+    SharedPtr<Entity> entity(new Entity(instanceId), [] (Entity* entity) {delete entity;});
     entity->AddComponent<Tag>(tag);
     entity->AddComponent<Transform>(Vector3(), Vector3(), Vector3(1.0, 1.0, 1.0));
 
     entites.insert(
-        std::make_pair(instanceId, SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}))
+        std::make_pair(instanceId, entity)
     );
 
-    setupQueue.push(SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}));
+    setupQueue.push(entity);
 
     S_INFO("Entity: %s has been created succesfully!", tag.c_str());
+
+    return entity;
 }
 WeakPtr<Entity> Registry::AddEntity(Vector3 position, Vector3 rotation, Vector3 scale)
 {
@@ -46,33 +56,37 @@ WeakPtr<Entity> Registry::AddEntity(Vector3 position, Vector3 rotation, Vector3 
     
     std::string tag = "Entity_" + std::to_string(instanceId);
 
-    Entity* entity = new Entity(instanceId);
+    SharedPtr<Entity> entity(new Entity(instanceId), [] (Entity* entity) {delete entity;});
     entity->AddComponent<Tag>(tag);
     entity->AddComponent<Transform>(position, rotation, scale);
 
     entites.insert(
-        std::make_pair(instanceId, SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}))
+        std::make_pair(instanceId, entity)
     );
 
-    setupQueue.push(SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}));
+    setupQueue.push(entity);
 
     S_INFO("Entity: %s has been created succesfully!", tag.c_str());
+
+    return entity;
 }   
 WeakPtr<Entity> Registry::AddEntity(std::string tag, Vector3 position, Vector3 rotation, Vector3 scale)
 {
     U32 instanceId = IdGenerator();
     
-    Entity* entity = new Entity(instanceId);
+    SharedPtr<Entity> entity(new Entity(instanceId), [] (Entity* entity) {delete entity;});
     entity->AddComponent<Tag>(tag);
     entity->AddComponent<Transform>(position, rotation, scale);
 
     entites.insert(
-        std::make_pair(instanceId, SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}))
+        std::make_pair(instanceId, entity)
     );
 
-    setupQueue.push(SharedPtr<Entity>(entity, [] (Entity* entity) {delete entity;}));
+    setupQueue.push(entity);
 
     S_INFO("Entity: %s has been created succesfully!", tag.c_str());
+
+    return entity;
 }
 
 WeakPtr<Entity> Registry::GetEntityById(U32 id)

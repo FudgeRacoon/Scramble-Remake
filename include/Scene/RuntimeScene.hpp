@@ -31,6 +31,9 @@ namespace Scramble::Scene
     private:
         ~RuntimeScene();
 
+    private:
+        static void Internal_RenderEntity(Transform* transform, SpriteRenderer* spriteRenderer);
+
     public:
         void OnSetupRuntime();
         void OnUpdateRuntime();

@@ -15,6 +15,24 @@ RuntimeScene::~RuntimeScene()
     this->sceneRegistry.reset();
 }
 
+void RuntimeScene::Internal_RenderEntity(Transform* transform, SpriteRenderer* spriteRenderer)
+{
+    if(spriteRenderer)
+    {
+        Matrix4 transformMatrix = Matrix4::Transform(
+            transform->position,
+            transform->rotation,
+            transform->scale
+        );
+
+        Renderer::DrawSprite(
+            spriteRenderer->sprite,
+            transformMatrix,
+            spriteRenderer->spriteColor
+        );
+    }
+}
+
 void RuntimeScene::OnSetupRuntime()
 {
     this->sceneRegistry->PollSetupQueue();
@@ -23,34 +41,20 @@ void RuntimeScene::OnUpdateRuntime()
 {
     Renderer::BeginScene(this->sceneCamera);
     
-    REGISTRY_LOOP(WeakPtr<Entity> entity, this->sceneRegistry, 
-        SharedPtr<Entity> temp = entity.lock();
-        
-        if(temp->GetComponent<Tag>()->enabled)
+    this->sceneRegistry->ForEach([] (SharedPtr<Entity> entity)
         {
-            temp->Update();
-
-            Transform* transform = temp->GetComponent<Transform>();
-            SpriteRenderer* spriteRenderer = temp->GetComponent<SpriteRenderer>();
-
-            if(spriteRenderer)
+            if(entity->GetComponent<Tag>()->enabled)
             {
-                Matrix4 transformMatrix = Matrix4::Transform(
-                    transform->position,
-                    transform->rotation,
-                    transform->scale
-                );
-
-                Renderer::DrawSprite(
-                    spriteRenderer->sprite,
-                    transformMatrix,
-                    spriteRenderer->spriteColor
-                );
+                entity->Update();
+                
+                Transform* transform = entity->GetComponent<Transform>();
+                SpriteRenderer* spriteRenderer = entity->GetComponent<SpriteRenderer>();
+                Internal_RenderEntity(transform, spriteRenderer);
             }
         }
+    );
 
-        this->sceneRegistry->PollDestroyQueue();  
-    )
+    this->sceneRegistry->PollDestroyQueue();  
 
     Renderer::EndScene();
 }
@@ -66,19 +70,19 @@ WeakPtr<Camera> RuntimeScene::GetSceneCamera()
 
 WeakPtr<Entity> RuntimeScene::AddEntity()
 {
-    this->sceneRegistry->AddEntity();
+    return this->sceneRegistry->AddEntity();
 }
 WeakPtr<Entity> RuntimeScene::AddEntity(std::string tag)
 {
-    this->sceneRegistry->AddEntity(tag);
+    return this->sceneRegistry->AddEntity(tag);
 }
 WeakPtr<Entity> RuntimeScene::AddEntity(Vector3 position, Vector3 rotation, Vector3 scale)
 {
-    this->sceneRegistry->AddEntity(position, rotation, scale);
+    return this->sceneRegistry->AddEntity(position, rotation, scale);
 }
 WeakPtr<Entity> RuntimeScene::AddEntity(std::string tag, Vector3 position, Vector3 rotation, Vector3 scale)
 {
-    this->sceneRegistry->AddEntity(tag, position, rotation, scale);
+    return this->sceneRegistry->AddEntity(tag, position, rotation, scale);
 }
 
 WeakPtr<Entity> RuntimeScene::GetEntityById(U32 id)

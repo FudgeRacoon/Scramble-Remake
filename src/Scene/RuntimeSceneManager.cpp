@@ -42,13 +42,17 @@ void RuntimeSceneManager::ChangeActiveScene(U32 buildIndex)
     SCRAMBLE_CORE_ASSERT_LOG(buildIndex < runtimeScenes.size() | buildIndex >= 0, "Build index is out of range!");
     SCRAMBLE_CORE_ASSERT_LOG(runtimeScenes[buildIndex] != activeScene, "Scene already active!");
 
-    activeScene->OnExitRuntime();
+    if(activeScene)
+        activeScene->OnExitRuntime();
+    
     activeScene = runtimeScenes[buildIndex];
 
     S_INFO("Scene of build index: %d is now active!", buildIndex);
 }
 void RuntimeSceneManager::UpdateActiveScene()
 {
+    SCRAMBLE_CORE_ASSERT_LOG(activeScene != nullptr, "No active scene to update!");
+
     activeScene->OnSetupRuntime();
     activeScene->OnUpdateRuntime();
 }

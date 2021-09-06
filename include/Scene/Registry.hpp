@@ -27,6 +27,8 @@ namespace Scramble::Scene
     typedef std::queue<SharedPtr<Entity>> EntitySetupQueue;
     typedef std::queue<SharedPtr<Entity>> EntityDestroyQueue;
 
+    typedef void(*CallbackFunc)(SharedPtr<Entity>);
+
     private:
         EntityMap entites;
         EntitySetupQueue setupQueue;
@@ -37,6 +39,9 @@ namespace Scramble::Scene
     
     public:
         Registry() = default;
+
+    public:
+        void ForEach(CallbackFunc func);
 
     public:
         EntityMap GetEntities();
@@ -57,16 +62,12 @@ namespace Scramble::Scene
 
     public:
         void PollSetupQueue();
+        void ResetSetupQueue();
         void PollDestroyQueue();
-
+    
     public:
         void Release();
-        void ResetSetupQueue();
-    };
-
-    #define REGISTRY_LOOP(_ENTITY_, _REGISTRY_, _EXPR_)\
-        for(auto it = _REGISTRY_->GetEntities().begin(); it != _REGISTRY_->GetEntities().end(); it++)\
-            {_ENTITY_ = it->second; _EXPR_}         
+    };     
 }
 
 #endif

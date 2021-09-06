@@ -196,7 +196,7 @@ Matrix4 Matrix4::Rotate(float angle, Vector3 axis)
 
     return m;
 }
-Matrix4 Matrix4::Transform(Vector3 translate, Vector3 scale, Vector3 rotation)
+Matrix4 Matrix4::Transform(Vector3 translate, Vector3 rotation, Vector3 scale)
 {
     Matrix4 m = Identity();
 

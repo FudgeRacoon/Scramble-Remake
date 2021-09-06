@@ -35,10 +35,7 @@ namespace Scramble::Scene
 
     #define GetActiveCamera() RuntimeSceneManager::GetActiveScene().lock()->GetSceneCamera()
     
-    #define CreateEntity() RuntimeSceneManager::GetActiveScene().lock()->AddEntity()
-    #define CreateEntity(name) RuntimeSceneManager::GetActiveScene().lock()->AddEntity(#name)
-    #define CreateEntity(position, rotation, scale) RuntimeSceneManager::GetActiveScene().lock()->AddEntity(position, rotation, scale)
-    #define CreateEntity(name, position, rotation, scale) RuntimeSceneManager::GetActiveScene().lock()->AddEntity(#name, position, rotation, scale)
+    #define CreateEntity(...) RuntimeSceneManager::GetActiveScene().lock()->AddEntity(__VA_ARGS__)
 
     #define FindEntityById(id) RuntimeSceneManager::GetActiveScene().lock()->GetEntityById(id)
     #define FindEntityByTag(tag) RuntimeSceneManager::GetActiveScene().lock()->GetEntityById(#tag)

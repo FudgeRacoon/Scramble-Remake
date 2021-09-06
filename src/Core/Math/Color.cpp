@@ -13,7 +13,7 @@ const Color Color::magenta = Color(255, 0, 255, 255);
 const Color Color::yellow  = Color(255, 235, 4, 255);
 
 Color::Color()
-    :r(0), g(0), b(0), a(255) {}
+    :r(255), g(255), b(255), a(255) {}
 Color::Color(I32 r, I32 g, I32 b)
     :r(r), g(g), b(b), a(255) {}
 Color::Color(I32 r, I32 g, I32 b, I32 a)

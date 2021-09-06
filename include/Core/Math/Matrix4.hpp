@@ -43,7 +43,7 @@ namespace Scramble
         static Matrix4 Transalte(Vector3 translate);
         static Matrix4 Scale(Vector3 scale);
         static Matrix4 Rotate(float angle, Vector3 axis);
-        static Matrix4 Transform(Vector3 translate, Vector3 scale, Vector3 rotation);
+        static Matrix4 Transform(Vector3 translate, Vector3 rotation, Vector3 scale);
 
     public:
         static Matrix4 LookAt(Vector3 position, Vector3 target, Vector3 up);
