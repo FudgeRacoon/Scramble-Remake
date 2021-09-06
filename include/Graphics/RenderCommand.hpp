@@ -17,7 +17,6 @@ namespace Scramble::Graphics
     {
     private:
         RenderCommand() = delete;
-        ~RenderCommand() = delete;
 
     public:
         static void OnStartUp(U32 x, U32 y, U32 width, U32 height);

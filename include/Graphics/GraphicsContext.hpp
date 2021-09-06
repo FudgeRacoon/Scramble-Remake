@@ -18,7 +18,6 @@ namespace Scramble::Graphics
     
     private:
         GraphicsContext() = delete;
-        ~GraphicsContext() = delete;
 
     public:
         static void OnStartUp(Window::NativeWindowHandle* handle);

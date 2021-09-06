@@ -39,6 +39,9 @@ namespace Scramble::Scene
         Registry() = default;
 
     public:
+        EntityMap GetEntities();
+
+    public:
         WeakPtr<Entity> AddEntity();
         WeakPtr<Entity> AddEntity(std::string tag);
         WeakPtr<Entity> AddEntity(Vector3 position, Vector3 rotation, Vector3 scale);
@@ -58,7 +61,12 @@ namespace Scramble::Scene
 
     public:
         void Release();
+        void ResetSetupQueue();
     };
+
+    #define REGISTRY_LOOP(_ENTITY_, _REGISTRY_, _EXPR_)\
+        for(auto it = _REGISTRY_->GetEntities().begin(); it != _REGISTRY_->GetEntities().end(); it++)\
+            {_ENTITY_ = it->second; _EXPR_}         
 }
 
 #endif

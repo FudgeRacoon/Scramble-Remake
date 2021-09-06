@@ -53,7 +53,7 @@ namespace Scramble::Graphics
         
         WeakPtr<Texture>*            textureSlots     = nullptr;
         WeakPtr<Shader>              registeredShader;
-        Camera*                      registeredCamera = nullptr;
+        SharedPtr<Camera>            registeredCamera;
 
         VertexData*                  lineVertexDataPtr  = nullptr;
         VertexData*                  lineVertexDataBase = nullptr;

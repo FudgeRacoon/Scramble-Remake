@@ -1,8 +1,7 @@
 #include "Graphics/GraphicsContext.hpp"
-using namespace Scramble;
 using namespace Scramble::Graphics;
 
-Window::NativeWindowHandle* GraphicsContext::handle = nullptr;
+Scramble::Window::NativeWindowHandle* GraphicsContext::handle = nullptr;
 
 void GraphicsContext::OnStartUp(Window::NativeWindowHandle* handle)
 { 
@@ -14,7 +13,7 @@ void GraphicsContext::OnStartUp(Window::NativeWindowHandle* handle)
     glewExperimental = true;
     if(glewInit() != 0)
     {
-        Logger::LogFatal("Failed to initialize GLEW");
+        S_FATAL("Failed to initialize GLEW");
         exit(EXIT_FAILURE);
     }
 

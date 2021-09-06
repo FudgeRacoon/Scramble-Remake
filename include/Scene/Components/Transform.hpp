@@ -10,13 +10,13 @@ namespace Scramble::Scene
     class Transform : public Component
     {
     public:
-        Vector3 positon;
+        Vector3 position;
         Vector3 rotation;
         Vector3 scale;
 
     public:
         Transform() = default;
-        Transform(Vector3 positon, Vector3 rotation, Vector3 scale);
+        Transform(Vector3 position, Vector3 rotation, Vector3 scale);
 
     public:
         void Setup() override;

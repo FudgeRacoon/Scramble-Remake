@@ -22,7 +22,6 @@ namespace Scramble::Graphics
 
     private:
         Renderer() = delete;
-        ~Renderer() = delete;
 
     public:
         static void InitBuffers();
@@ -34,7 +33,7 @@ namespace Scramble::Graphics
         static void OnShutDown();
 
     public:
-        static void BeginScene(Camera* camera);
+        static void BeginScene(SharedPtr<Camera> camera);
         static void EndScene();
 
     public:

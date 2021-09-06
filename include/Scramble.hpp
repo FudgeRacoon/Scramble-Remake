@@ -32,7 +32,15 @@
 #include "Utils/SpriteUtils.hpp"
 #include "Utils/Utility.hpp"
 
+#include "Scene/Components/Tag.hpp"
+#include "Scene/Components/Transform.hpp"
+#include "Scene/Components/SpriteRenderer.hpp"
 #include "Scene/Camera.hpp"
+#include "SCene/Component.hpp"
+#include "Scene/Entity.hpp"
+#include "Scene/Registry.hpp"
+#include "Scene/RuntimeScene.hpp"
+#include "Scene/RuntimeSceneManager.hpp"
 
 #include "Core/ScrambleCore.hpp"
 

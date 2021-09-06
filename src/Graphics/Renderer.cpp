@@ -144,7 +144,7 @@ void Renderer::OnShutDown()
     delete[] context.textureSlots; 
 }
 
-void Renderer::BeginScene(Camera* camera)
+void Renderer::BeginScene(SharedPtr<Camera> camera)
 {
     StartBatch();
     context.registeredCamera = camera; 
@@ -152,7 +152,7 @@ void Renderer::BeginScene(Camera* camera)
 void Renderer::EndScene()
 {
     Flush();
-    context.registeredCamera = nullptr;
+    context.registeredCamera.reset();
 }
 
 WeakPtr<Shader> Renderer::GetRegisteredShader()

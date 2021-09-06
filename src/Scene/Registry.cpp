@@ -1,6 +1,11 @@
 #include "Scene/Registry.hpp"
 using namespace Scramble::Scene;
 
+Registry::EntityMap Registry::GetEntities()
+{
+    return this->entites;
+}
+
 WeakPtr<Entity> Registry::AddEntity()
 {
     U32 instanceId = IdGenerator();
@@ -118,7 +123,7 @@ void Registry::DestroyEntityByTag(std::string tag)
             it->second.reset();
             entites.erase(it);
 
-            S_INFO("Entity: %s has been destroyed succesfully!", tag);
+            S_INFO("Entity: %s has been destroyed succesfully!", tag.c_str());
 
             return;
         }
@@ -161,5 +166,10 @@ void Registry::Release()
         destroyQueue.front().reset();
         destroyQueue.pop();
     }
+}
+void Registry::ResetSetupQueue()
+{
+    for(auto entity : entites)
+        setupQueue.push(entity.second);
 }
 
