@@ -17,7 +17,7 @@ namespace Scramble::Input
     class KeyListener : public EventHandler
     {
     private:
-        byte* keyboardStates; 
+        static byte* keyboardStates; 
 
     private:
         KeyListener();

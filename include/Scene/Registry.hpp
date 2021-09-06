@@ -9,6 +9,8 @@
 #include "Core/Logger/Logger.hpp"
 #include "Core/Math/Vector3.hpp"
 
+#include "Components/Tag.hpp"
+#include "Components/Transform.hpp"
 #include "Entity.hpp"
 
 namespace Scramble::Scene
@@ -21,9 +23,9 @@ namespace Scramble::Scene
 
     class Registry
     {
-    typedef std::unordered_map<U32, Entity*> EntityMap;
-    typedef std::queue<Entity*> EntitySetupQueue;
-    typedef std::queue<Entity*> EntityDestroyQueue;
+    typedef std::unordered_map<U32, SharedPtr<Entity>> EntityMap;
+    typedef std::queue<SharedPtr<Entity>> EntitySetupQueue;
+    typedef std::queue<SharedPtr<Entity>> EntityDestroyQueue;
 
     private:
         EntityMap entites;
@@ -34,14 +36,17 @@ namespace Scramble::Scene
         EntityIdGenerator IdGenerator;
     
     public:
-        Entity* AddEntity();
-        Entity* AddEntity(std::string tag);
-        Entity* AddEntity(Vector3 position, Vector3 rotation, Vector3 scale);
-        Entity* AddEntity(std::string tag, Vector3 position, Vector3 rotation, Vector3 scale);
+        Registry() = default;
 
     public:
-        Entity* GetEntityById(U32 id);
-        Entity* GetEntityByTag(std::string tag);
+        WeakPtr<Entity> AddEntity();
+        WeakPtr<Entity> AddEntity(std::string tag);
+        WeakPtr<Entity> AddEntity(Vector3 position, Vector3 rotation, Vector3 scale);
+        WeakPtr<Entity> AddEntity(std::string tag, Vector3 position, Vector3 rotation, Vector3 scale);
+
+    public:
+        WeakPtr<Entity> GetEntityById(U32 id);
+        WeakPtr<Entity> GetEntityByTag(std::string tag);
 
     public:
         void DestroyEntityById(U32 id);

@@ -11,14 +11,14 @@ Window::Window(const WindowProps& props)
     this->fullscreen = props.fullscreen;
     this->vSync = props.vSync;
 
-    Init();
+    Internal_Init();
 }
 Window::~Window()
 {
-    ShutDown();
+    Internal_ShutDown();
 }
 
-void Window::Init()
+void Window::Internal_Init()
 {
     if(glfwInit() != GLFW_TRUE)
     {
@@ -36,15 +36,34 @@ void Window::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    Internal_CreateWindow();
+
+    if(this->vSync)
+        glfwSwapInterval(1);
+    else
+        glfwSwapInterval(0);
+
+    this->running = true;
+}
+void Window::Internal_ShutDown()
+{   
+    glfwDestroyWindow(this->windowHandle);
+    glfwTerminate();
+
+    this->windowHandle = nullptr;
+}
+void Window::Internal_CreateWindow()
+
+{
     if(this->fullscreen)
     {
         GLFWmonitor* monitor = glfwGetPrimaryMonitor();
         const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-
-        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-
+        
         this->width = mode->width;
         this->height = mode->height;
+        
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
         this->windowHandle = glfwCreateWindow(
             this->width,
@@ -71,47 +90,28 @@ void Window::Init()
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-    
-    if(this->vSync)
-        glfwSwapInterval(1);
-    else
-        glfwSwapInterval(0);
-
-    this->running = true;
-}
-void Window::ShutDown()
-{   
-    glfwDestroyWindow(this->windowHandle);
-    glfwTerminate();
-
-    this->windowHandle = nullptr;
 }
 
 const char* Window::GetTitle()
 {
     return this->title;
 }
-
-U32 Window::GetX()
-{
-    return this->x;
-}
-U32 Window::GetY()
-{
-    return this->y;
-}
-U32 Window::GetWidth()
-{
-    return this->width;
-}
-U32 Window::GetHeight()
-{
-    return this->height;
-}
-
 Window::NativeWindowHandle* Window::GetNativeHandle()
 {
     return this->windowHandle;
+}
+
+bool Window::IsVsync()
+{
+    return this->vSync;
+}
+bool Window::IsRunning()
+{
+    return this->running;
+}
+bool Window::IsFullscreen()
+{
+    return this->fullscreen;
 }
 
 void Window::SetTitle(const char* title)
@@ -121,23 +121,13 @@ void Window::SetTitle(const char* title)
     glfwSetWindowTitle(this->windowHandle, this->title);
 }
 
-void Window::SetX(U32 value)
+void Window::SetVsync(bool value)
 {
-    this->x = value;
+    if(value)
+        glfwSwapInterval(1);
+    else
+        glfwSwapInterval(0);
 }
-void Window::SetY(U32 value)
-{
-    this->y = value;
-}
-void Window::SetWidth(U32 value)
-{
-    this->width = value;
-}
-void Window::SetHeight(U32 value)
-{
-    this->height = value;
-}
-
 void Window::SetFullscreen(bool value)
 {
     if(this->fullscreen == value)
@@ -172,26 +162,6 @@ void Window::SetFullscreen(bool value)
             0
         );
     }
-}
-void Window::SetVsync(bool value)
-{
-    if(value)
-        glfwSwapInterval(1);
-    else
-        glfwSwapInterval(0);
-}
-
-bool Window::IsFullscreen()
-{
-    return this->fullscreen;
-}
-bool Window::IsRunning()
-{
-    return this->running;
-}
-bool Window::IsVsync()
-{
-    return this->vSync;
 }
 
 void Window::CloseWindow()

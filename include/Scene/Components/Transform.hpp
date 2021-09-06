@@ -16,6 +16,7 @@ namespace Scramble::Scene
 
     public:
         Transform() = default;
+        Transform(Vector3 positon, Vector3 rotation, Vector3 scale);
 
     public:
         void Setup() override;

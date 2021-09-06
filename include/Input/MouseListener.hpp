@@ -17,11 +17,11 @@ namespace Scramble::Input
     class MouseListener : public EventHandler
     {
     private:
-        I32* x; 
-        I32* y;
-        I32* xOffset; 
-        I32* yOffset;
-        byte* mouseState;
+        static I32* x; 
+        static I32* y;
+        static I32* xOffset; 
+        static I32* yOffset;
+        static byte* mouseState;
 
     private:
         MouseListener();

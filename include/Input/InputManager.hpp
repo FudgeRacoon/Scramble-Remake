@@ -25,11 +25,13 @@ namespace Scramble::Input
     private:
         static I32* mousePosX; 
         static I32* mousePosY;
-        static I32* prevMousePosX; 
-        static I32* prevMousePosY;
         static I32* mouseOffsetX; 
         static I32* mouseOffsetY;
 
+    private:
+        static I32 prevMousePosX; 
+        static I32 prevMousePosY;
+    
     private:
         InputManager() = delete;
         ~InputManager() = delete;

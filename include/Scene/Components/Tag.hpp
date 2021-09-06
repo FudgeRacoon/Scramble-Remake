@@ -14,7 +14,7 @@ namespace Scramble::Scene
         bool enabled;
 
     public:
-        Tag() = default;
+        Tag(std::string tag, bool enabled = true);
 
     public:
         void Setup() override;

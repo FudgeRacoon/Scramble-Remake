@@ -4,7 +4,6 @@ using namespace Scramble;
 UniquePtr<Window> Application::windowContext;
 UniquePtr<RuntimeInstance> Application::runtimeContext;
 
-float counter = 0.0;
 #define SCRAMBLE_NO_DEBUG
 
 void Application::Start(RuntimeInstance* instance)
@@ -16,12 +15,18 @@ void Application::Start(RuntimeInstance* instance)
 
     Events::EventDispatcher::OnStartUp(windowContext->GetNativeHandle());
     
+    Input::InputManager::OnStartUp();
+    
     Graphics::GraphicsContext::OnStartUp(windowContext->GetNativeHandle());
-    Graphics::RenderCommand::OnStartUp(0, 0, windowContext->GetWidth(), windowContext->GetHeight());
+    Graphics::RenderCommand::OnStartUp(0, 0, windowContext->width, windowContext->height);
     Graphics::OpenGLDebugger::OnStartUp();
 
     ResourceManager::OnStartUp();
     Graphics::Renderer::OnStartUp();
+
+    windowContext->SetOnWindowClose([] () {windowContext->CloseWindow();});
+    windowContext->SetOnWindowMove([] (WindowMovedEvent* e) {windowContext-> x = e->GetX(); windowContext->y = e->GetY();});
+    windowContext->SetOnWindowResize([] (WindowResizeEvent* e) {windowContext->width = e->GetWidth(); windowContext->height = e->GetHeight();});
 }
 void Application::Run()
 {

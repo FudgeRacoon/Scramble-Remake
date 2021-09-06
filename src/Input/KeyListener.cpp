@@ -1,9 +1,11 @@
 #include "Input/KeyListener.hpp"
 using namespace Scramble::Input;
 
+byte* KeyListener::keyboardStates = nullptr;
+
 KeyListener::KeyListener()
 {
-    this->keyboardStates = new byte[512];
+    keyboardStates = new byte[512];
     memset(keyboardStates, 0, 512);
 
     SetOnKeyPress([] (KeyPressedEvent* e) {keyboardStates[e->GetKey()] = 1;});
@@ -12,10 +14,10 @@ KeyListener::KeyListener()
 
 KeyListener::~KeyListener()
 {
-    delete[] this->keyboardStates;
+    delete[] keyboardStates;
 }
 
-KeyListener* GetInstance()
+KeyListener* KeyListener::GetInstance()
 {
     static KeyListener* instance = new KeyListener();
     return instance;
@@ -23,6 +25,6 @@ KeyListener* GetInstance()
 
 const byte* KeyListener::GetKeyboardState()
 {
-    return this->keyboardStates;
+    return keyboardStates;
 }
 

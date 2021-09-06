@@ -18,22 +18,20 @@ namespace Scramble
     {
     public:
         typedef GLFWwindow NativeWindowHandle;
-
+    
     private:
         const char* title;
-
+        NativeWindowHandle* windowHandle;
+    
     private:
+        bool vSync;
+        bool running;
+        bool fullscreen;
+    
+    public:
         U32 x, y;
         U32 width, height;
     
-    private:
-        GLFWwindow* windowHandle = nullptr;
-
-    private:
-        bool fullscreen;
-        bool running;
-        bool vSync;
-
     public:
         Window(const WindowProps& props = WindowProps());
 
@@ -41,39 +39,26 @@ namespace Scramble
         ~Window();
 
     private:
-        void Init();
-        void ShutDown();
+        void Internal_Init();
+        void Internal_ShutDown();
+        void Internal_CreateWindow();
 
     public:
         const char* GetTitle();
-
-    public:
-        U32 GetX(); 
-        U32 GetY();
-        U32 GetWidth(); 
-        U32 GetHeight();
-
-    public:
         NativeWindowHandle* GetNativeHandle();
-
+ 
     public:
-        bool IsFullscreen();
-        bool IsRunning();
         bool IsVsync();
+        bool IsRunning();
+        bool IsFullscreen();
 
     public:
         void SetTitle(const char* title);
-    
-    public:
-        void SetX(U32 value); 
-        void SetY(U32 value);
-        void SetWidth(U32 value); 
-        void SetHeight(U32 value);
 
     public:
-        void SetFullscreen(bool value);
         void SetVsync(bool value);
-    
+        void SetFullscreen(bool value);
+
     public:
         void CloseWindow();
     };

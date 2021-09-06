@@ -19,7 +19,8 @@ namespace Scramble::Graphics
         U32 sortingOrder;
 
     public:
-        
+        void Setup() override;
+        void Update() override;
     };
 }
 

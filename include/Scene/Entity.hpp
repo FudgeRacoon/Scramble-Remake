@@ -31,8 +31,8 @@ namespace Scramble::Scene
         ~Entity();
 
     public:
-        template<typename CompT>
-        void AddComponent()
+        template<typename CompT, typename... CompArgs>
+        void AddComponent(CompArgs... args)
         {
             SCRAMBLE_CORE_ASSERT_LOG((std::is_base_of<Component,CompT>::value), "Type passed is not a component!");
            
@@ -43,7 +43,7 @@ namespace Scramble::Scene
                     return;
                 }
                     
-            CompT* comp = new CompT();
+            CompT* comp = new CompT(args...);
             comp->owner = this;
             components.push_back(comp);
         }
@@ -80,6 +80,7 @@ namespace Scramble::Scene
     public:
         void Setup();
         void Update();
+    
     friend Registry;
     };
 }

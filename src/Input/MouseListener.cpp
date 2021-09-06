@@ -1,19 +1,19 @@
 #include "Input/MouseListener.hpp"
 using namespace Scramble::Input;
 
-MouseListener* MouseListener::GetInstance()
-{
-    static MouseListener* instance = new MouseListener();
-    return instance;
-}
+I32* MouseListener::x = nullptr; 
+I32* MouseListener::y = nullptr;
+I32* MouseListener::xOffset = nullptr; 
+I32* MouseListener::yOffset = nullptr;
+byte* MouseListener::mouseState = nullptr;
 
 MouseListener::MouseListener()
 {
-    MouseListener::x = new I32(0); 
-    MouseListener::y = new I32(0);
-    MouseListener::xOffset = new I32(0); 
-    MouseListener::yOffset = new I32(0);
-    MouseListener::mouseState = new byte[8];
+    x = new I32(0); 
+    y = new I32(0);
+    xOffset = new I32(0); 
+    yOffset = new I32(0);
+    mouseState = new byte[8];
     memset(MouseListener::mouseState, 0, 8);
 
     SetOnMouseButtonPress([] (MouseButtonPressedEvent* e) {mouseState[e->GetButton()] = 1;});
@@ -24,11 +24,17 @@ MouseListener::MouseListener()
 
 MouseListener::~MouseListener()
 {
-    delete MouseListener::x; 
-    delete MouseListener::y;
-    delete MouseListener::xOffset; 
-    delete MouseListener::yOffset;
-    delete[] MouseListener::mouseState;
+    delete x; 
+    delete y;
+    delete xOffset; 
+    delete yOffset;
+    delete[] mouseState;
+}
+
+MouseListener* MouseListener::GetInstance()
+{
+    static MouseListener* instance = new MouseListener();
+    return instance;
 }
 
 const byte* MouseListener::GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& yOffset)
@@ -38,5 +44,5 @@ const byte* MouseListener::GetMouseState(I32*& x, I32*& y, I32*& xOffset, I32*& 
     xOffset = MouseListener::xOffset; 
     yOffset = MouseListener::yOffset;
 
-    return MouseListener::mouseState;
+    return mouseState;
 }

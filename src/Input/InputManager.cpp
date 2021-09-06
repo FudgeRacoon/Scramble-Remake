@@ -11,10 +11,11 @@ byte* InputManager::prevMouseState = nullptr;
 
 I32* InputManager::mousePosX = nullptr;
 I32* InputManager::mousePosY = nullptr;
-I32* InputManager::prevMousePosX = nullptr; 
-I32* InputManager::prevMousePosY = nullptr;
 I32* InputManager::mouseOffsetX = nullptr;
 I32* InputManager::mouseOffsetY = nullptr;
+
+I32 InputManager::prevMousePosX; 
+I32 InputManager::prevMousePosY;
 
 void InputManager::OnStartUp()
 {
@@ -36,8 +37,8 @@ void InputManager::OnFrameEnd()
     memcpy(prevKeyboardState, keyboardState, 512);
     memcpy(prevMouseState, mouseState, 8);
 
-    prevMousePosX = mousePosX;
-    prevMousePosY = mousePosY;
+    prevMousePosX = *mousePosX;
+    prevMousePosY = *mousePosY;
 }
 
 bool InputManager::GetKey(KeyCode code)
