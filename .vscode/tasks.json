@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file",
+            "label": "Compile",
             "command": "C:\\MinGW\\bin\\g++.exe",
             "args": [
                 "-g",
@@ -16,15 +16,22 @@
                 "${workspaceFolder}\\src\\Graphics\\OpenGL\\*.cpp",
                 "${workspaceFolder}\\src\\Graphics\\*.cpp",
                 "${workspaceFolder}\\src\\Input\\*.cpp",
+                "${workspaceFolder}\\src\\Physics\\*.cpp",
                 "${workspaceFolder}\\src\\Scene\\*.cpp",
                 "${workspaceFolder}\\src\\Scene\\Components\\*.cpp",
                 "${workspaceFolder}\\src\\Utils\\*.cpp",
                 "${workspaceFolder}\\src\\*.cpp",
-                "${workspaceFolder}\\vendor\\stb_image\\*.cpp"
+                "${workspaceFolder}\\vendor\\stb_image\\*.cpp",
+                "${workspaceFolder}\\vendor\\Box2D\\src\\collision\\*.cpp", 
+                "${workspaceFolder}\\vendor\\Box2D\\src\\common\\*.cpp",
+                "${workspaceFolder}\\vendor\\Box2D\\src\\dynamics\\*.cpp", 
+                "${workspaceFolder}\\vendor\\Box2D\\src\\rope\\*.cpp",
                 "-o",
                 "${workspaceFolder}\\build\\Scramble.exe",
                 "-Iinclude",
                 "-Ivendor",
+                "-Ivendor\\Box2D\\include", 
+                "-Ivendor\\Box2D\\src",
                 "-Llib",
                 "-lglfw3dll",
                 "-lglew32",

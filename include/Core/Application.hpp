@@ -2,6 +2,7 @@
 #define APPLICATION_HPP
 
 #include "Common/Types.hpp"
+#include "Math/Vector3.hpp"
 
 #include "Graphics/OpenGL/Debug/OpenGLDebugger.hpp"
 #include "Graphics/GraphicsContext.hpp"
@@ -16,11 +17,10 @@
 #include "Events/ApplicationEvent.hpp"
 #include "Events/Event.hpp"
 #include "Events/EventDispatcher.hpp"
-#include "Events/EventHandler.hpp"
 
 #include "Input/InputManager.hpp"
-#include "Input/KeyListener.hpp"
-#include "Input/MouseListener.hpp"
+
+#include "Physics/PhysicsSystem.hpp"
 
 namespace Scramble
 {

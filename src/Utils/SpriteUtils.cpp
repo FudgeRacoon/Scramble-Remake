@@ -32,7 +32,7 @@ void SpriteUtils::SliceSprite(WeakPtr<Sprite> sprite, std::string name, I32 spri
 
             std::string spriteName = name + "_" + std::to_string(counter++);
 
-            ResourceManager::CreateSprite(spriteName, sprite.lock()->GetTexture(), texCoords, spriteWidth, spriteHeight);
+            ResourceManager::CreateSprite(spriteName, sprite.lock()->GetTexture(), texCoords);
         }
 
 }

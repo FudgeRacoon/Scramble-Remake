@@ -14,7 +14,7 @@ namespace Scramble::Scene
         bool enabled;
 
     public:
-        Tag(std::string tag, bool enabled = true);
+        Tag(Entity* owner, std::string tag, bool enabled = true);
 
     public:
         void Setup() override;

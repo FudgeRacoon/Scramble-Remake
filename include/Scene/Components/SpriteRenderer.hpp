@@ -22,8 +22,8 @@ namespace Scramble::Scene
         U32 sortingOrder;
 
     public:
-        SpriteRenderer();
-        SpriteRenderer(WeakPtr<Sprite> sprite);
+        SpriteRenderer(Entity* owner);
+        SpriteRenderer(Entity* owner, WeakPtr<Sprite> sprite);
 
     public:
         void Setup() override;

@@ -9,7 +9,7 @@
             "name": "g++.exe - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\build/Scramble.exe",
+            "program": "${workspaceFolder}\\build\\Scramble.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -24,7 +24,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++.exe build active file"
+            "preLaunchTask": "Compile"
         }
     ]
 }

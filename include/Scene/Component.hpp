@@ -11,7 +11,7 @@ namespace Scramble::Scene
         Entity* owner;
 
     protected:
-        Component();
+        Component(Entity* owner);
 
     protected:
         virtual ~Component();

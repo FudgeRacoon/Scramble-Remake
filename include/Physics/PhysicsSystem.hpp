@@ -20,6 +20,9 @@ namespace Scramble::Physics
 {
     class PhysicsSystem
     {
+    public:
+        static constexpr F32 PPM = 64.0;
+
     private:
         static b2World* physicsWorld;
     
@@ -29,8 +32,6 @@ namespace Scramble::Physics
     private:
         static F32 timeStep;
         static F32 accumulator;
-
-    private:
         static I32 positionIterations;
         static I32 velocityIterations;
 

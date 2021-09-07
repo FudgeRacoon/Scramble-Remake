@@ -24,6 +24,8 @@ void Application::Start(RuntimeInstance* instance)
     ResourceManager::OnStartUp();
     Graphics::Renderer::OnStartUp();
 
+    Physics::PhysicsSystem::OnStartUp(Vector3(0.0, -10.0, 0.0), 1.0 / 120.0);
+
     windowContext->SetOnWindowClose([] () {windowContext->CloseWindow();});
     windowContext->SetOnWindowMove([] (WindowMovedEvent* e) {windowContext-> x = e->GetX(); windowContext->y = e->GetY();});
     windowContext->SetOnWindowResize([] (WindowResizeEvent* e) {windowContext->width = e->GetWidth(); windowContext->height = e->GetHeight();});
@@ -36,7 +38,7 @@ void Application::Run()
     {
         Time::OnUpdate();
 
-        if(Time::GetDeltaTime() >= (1.0 / 60.0))
+        if(Time::GetDeltaTime() >= (1.0 / 120.0))
         {
             #ifndef SCRAMBLE_NO_DEBUG
                 double lag = Time::GetDeltaTime() - (1.0 / 60.0);
@@ -47,6 +49,8 @@ void Application::Run()
             Events::EventDispatcher::PollEvents();
 
             Graphics::RenderCommand::Clear();
+
+            Physics::PhysicsSystem::FixedUpdate();
 
             runtimeContext->OnUpdate();
 
@@ -62,6 +66,8 @@ void Application::Run()
 }
 void Application::ShutDown()
 {
+    Physics::PhysicsSystem::OnShutDown();
+
     Graphics::Renderer::OnShutDown();
     ResourceManager::OnShutDown();
 

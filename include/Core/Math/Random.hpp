@@ -22,7 +22,7 @@ namespace Scramble
         F32 min = 0.0, max = 100.0;
 
     public:
-        Random(U32 seed);
+        Random(F64 seed);
 
     public:
         void Prob(F32 value);

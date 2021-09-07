@@ -88,18 +88,13 @@ void ResourceManager::CreateSprite(std::string name, WeakPtr<Texture> texture, R
 
     S_WARN("Sprite already exists!");
 }
-void ResourceManager::CreateSprite(std::string name, WeakPtr<Texture> texture, Vector2* uv, U32 width, U32 height)
+void ResourceManager::CreateSprite(std::string name, WeakPtr<Texture> texture, Vector2* uv)
 {
     auto it = sprites.find(name);
 
     if(it == sprites.end())
     {
-        Sprite* sprite = nullptr;
-    
-        if(width == 0 || height == 0)
-            sprite = new Sprite(texture,  Rect(-32.0, 32.0, 64.0, 64.0), uv);
-        else
-            sprite = new Sprite(texture,  Rect(-32.0, 32.0, 64.0, 64.0), uv, width, height);
+        Sprite* sprite = sprite = new Sprite(texture,  Rect(-32.0, 32.0, 64.0, 64.0), uv);
         
         sprites.insert(
             std::make_pair(name, SharedPtr<Sprite>(sprite, [](Sprite* sprite) {delete sprite;}))

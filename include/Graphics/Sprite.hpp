@@ -26,12 +26,9 @@ namespace Scramble::Graphics
         Vector2* textureCoordinates;
 
     private:
-        U32 width, height;
-
-    private:
         Sprite(std::weak_ptr<Texture> texture);
         Sprite(std::weak_ptr<Texture> texture, Rect rect);
-        Sprite(std::weak_ptr<Texture> texture, Rect rect, Vector2* textureCoordinates, U32 width = 0, U32 height = 0);
+        Sprite(std::weak_ptr<Texture> texture, Rect rect, Vector2* textureCoordinates);
     
     private:
         ~Sprite();
@@ -40,11 +37,7 @@ namespace Scramble::Graphics
         Rect GetRect();
         WeakPtr<Texture> GetTexture();
         Vector2* GetTextureCoordinates();
-
-    public:
-        U32 GetWidth();
-        U32 GetHeight();
-
+    
     public:
         void SetRect(Rect rect);
         void SetTexture(WeakPtr<Texture> texture);

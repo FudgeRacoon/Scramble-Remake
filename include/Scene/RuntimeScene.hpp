@@ -40,7 +40,7 @@ namespace Scramble::Scene
         void OnExitRuntime();
 
     public:
-        WeakPtr<Camera> GetSceneCamera();
+        SharedPtr<Camera> GetSceneCamera();
 
     public:
         WeakPtr<Entity> AddEntity();

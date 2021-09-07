@@ -10,6 +10,7 @@
 #include "../Entity.hpp"
 #include "../Component.hpp"
 #include "Transform.hpp"
+#include "BoxCollider.hpp"
 
 using namespace Scramble;
 using namespace Scramble::Physics;
@@ -43,8 +44,8 @@ namespace Scramble::Scene
         Transform* ownerTransform;
 
     public:
-        RigidBody();
-        RigidBody(BodyType bodyType, F32 mass);
+        RigidBody(Entity* owner);
+        RigidBody(Entity* owner, BodyType bodyType, F32 mass);
 
     public:
         F32 GetMass();

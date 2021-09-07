@@ -1,7 +1,7 @@
 #include "Scene/Components/RigidBody.hpp"
 using namespace Scramble::Scene;
 
-RigidBody::RigidBody()
+RigidBody::RigidBody(Entity* owner) : Component(owner)
 {
     this->nativeBody = nullptr;
 
@@ -16,8 +16,12 @@ RigidBody::RigidBody()
     this->props.continuousCollison = true;
 
     this->ownerTransform = this->owner->GetComponent<Transform>();
+    
+    this->owner->AddComponent<BoxCollider>();
+    
+    PhysicsSystem::AddBody(this, this->owner->GetComponent<BoxCollider>());
 }
-RigidBody::RigidBody(BodyType bodyType, F32 mass)
+RigidBody::RigidBody(Entity* owner, BodyType bodyType, F32 mass) : Component(owner)
 {
     this->nativeBody = nullptr;
 
@@ -32,6 +36,10 @@ RigidBody::RigidBody(BodyType bodyType, F32 mass)
     this->props.continuousCollison = true;
 
     this->ownerTransform = this->owner->GetComponent<Transform>();
+
+    this->owner->AddComponent<BoxCollider>();
+
+    PhysicsSystem::AddBody(this, this->owner->GetComponent<BoxCollider>());
 }
 
 F32 RigidBody::GetMass()
@@ -111,7 +119,7 @@ void RigidBody::Update()
     b2Vec2 nativeVelocity = this->nativeBody->GetLinearVelocity();
     this->props.velocity = Vector3(nativeVelocity.x, nativeVelocity.y, 0.0);
 
-    this->ownerTransform->position.x = this->nativeBody->GetPosition().x;
-    this->ownerTransform->position.y = this->nativeBody->GetPosition().y;
+    this->ownerTransform->position.x = this->nativeBody->GetPosition().x * PhysicsSystem::PPM;
+    this->ownerTransform->position.y = this->nativeBody->GetPosition().y * PhysicsSystem::PPM;
     this->ownerTransform->rotation.z = this->nativeBody->GetAngle();
 }

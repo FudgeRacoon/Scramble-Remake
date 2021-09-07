@@ -41,8 +41,7 @@ namespace Scramble::Scene
                     return;
                 }
                     
-            CompT* comp = new CompT(args...);
-            comp->owner = this;
+            CompT* comp = new CompT(this, args...);
             components.push_back(comp);
         }
         template<typename CompT>
@@ -58,7 +57,6 @@ namespace Scramble::Scene
                     return qeuriedComponent;
             }
 
-            S_WARN("Attempting to retrieve non-existing component!");
             return nullptr;
         }
         template<typename CompT>
@@ -73,8 +71,6 @@ namespace Scramble::Scene
                     this->components.erase(it);
                     return;
                 }
-
-            S_WARN("Attempting to remove non-existing component!");
         }
 
     public:

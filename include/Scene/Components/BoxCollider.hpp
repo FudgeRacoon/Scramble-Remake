@@ -28,10 +28,9 @@ namespace Scramble::Scene
 
     private:
         Transform* ownerTransform;
-        SpriteRenderer* ownerSpriteRenderer;
     
     public:
-        BoxCollider();
+        BoxCollider(Entity* owner);
     
     public:
         Vector3 GetSize();

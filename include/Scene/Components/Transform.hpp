@@ -15,8 +15,8 @@ namespace Scramble::Scene
         Vector3 scale;
 
     public:
-        Transform() = default;
-        Transform(Vector3 position, Vector3 rotation, Vector3 scale);
+        Transform(Entity* owner);
+        Transform(Entity* owner, Vector3 position, Vector3 rotation, Vector3 scale);
 
     public:
         void Setup() override;

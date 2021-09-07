@@ -11,7 +11,6 @@ Vector2 PhysicsSystem::globalGravity = Vector2();
 
 F32 PhysicsSystem::timeStep = 0.0;
 F32 PhysicsSystem::accumulator = 0.0;
-
 I32 PhysicsSystem::positionIterations = 0;
 I32 PhysicsSystem::velocityIterations = 0;
 
@@ -20,7 +19,6 @@ void PhysicsSystem::OnStartUp(Vector3 gravity, F32 timeStep)
     PhysicsSystem::globalGravity = gravity;
     
     PhysicsSystem::timeStep = timeStep;
-
     PhysicsSystem::positionIterations = 3;
     PhysicsSystem::velocityIterations = 8;
 
@@ -33,49 +31,47 @@ void PhysicsSystem::OnShutDown()
 
 void PhysicsSystem::AddBody(RigidBody* rigidbody, BoxCollider* collider)
 {
-    b2BodyDef* bodyDef = new b2BodyDef();
-
+    b2Body* body = nullptr;
     Transform* transform = rigidbody->ownerTransform;
 
-    bodyDef->position.Set(transform->position.x, transform->position.y);
-    bodyDef->angle = transform->rotation.z;
+    b2BodyDef bodyDef;
+    b2FixtureDef fixtureDef;
+    b2PolygonShape polygonShape;
 
-    bodyDef->linearDamping = rigidbody->props.linearDrag;
-    bodyDef->angularDamping = rigidbody->props.angularDrag;
-    bodyDef->gravityScale = rigidbody->props.gravityScale;
+    bodyDef.position.Set(
+        transform->position.x / PhysicsSystem::PPM, 
+        transform->position.y / PhysicsSystem::PPM
+    );
+    bodyDef.angle = transform->rotation.z;
+
+    bodyDef.linearDamping = rigidbody->props.linearDrag;
+    bodyDef.angularDamping = rigidbody->props.angularDrag;
+    bodyDef.gravityScale = rigidbody->props.gravityScale;
 
     switch(rigidbody->props.bodyType)
     {
-        case BodyType::DYNAMIC:   bodyDef->type = b2BodyType::b2_dynamicBody; break;
-        case BodyType::KINEMATIC: bodyDef->type = b2BodyType::b2_kinematicBody; break;
-        case BodyType::STATIC:    bodyDef->type = b2BodyType::b2_staticBody; break;
+        case BodyType::STATIC:    bodyDef.type = b2BodyType::b2_staticBody; break;
+        case BodyType::DYNAMIC:   bodyDef.type = b2BodyType::b2_dynamicBody; break;
+        case BodyType::KINEMATIC: bodyDef.type = b2BodyType::b2_kinematicBody; break;
     }
 
-    bodyDef->fixedRotation = rigidbody->props.fixedRotation;
-    bodyDef->bullet = rigidbody->props.continuousCollison;
+    bodyDef.fixedRotation = rigidbody->props.fixedRotation;
+    bodyDef.bullet = rigidbody->props.continuousCollison;
 
-    b2PolygonShape* bodyShape = nullptr;
-    b2FixtureDef* bodyFixtureDef = nullptr;
-
-    if(collider)
-    {
-        bodyShape = new b2PolygonShape(); 
-        bodyFixtureDef = new b2FixtureDef();
-
-        Vector3 center = collider->GetCenter();
-        Vector3 extents = collider->GetExtents();
-        bodyShape->SetAsBox(extents.x, extents.y, b2Vec2(center.x, center.y), 0.0);
-
-        bodyFixtureDef->shape = bodyShape;
-        bodyFixtureDef->density = rigidbody->props.mass / (collider->GetSize().x * collider->GetSize().y);
-
-        collider->nativeShape = bodyShape;
-    }
-
-    b2Body* body = physicsWorld->CreateBody(bodyDef);
+    body = physicsWorld->CreateBody(&bodyDef);
     
-    if(bodyFixtureDef)
-        body->CreateFixture(bodyFixtureDef);
+    Vector3 size = collider->GetSize() / PhysicsSystem::PPM;
+    Vector3 center = collider->GetCenter() / PhysicsSystem::PPM;
+    Vector3 extents = collider->GetExtents() / PhysicsSystem::PPM;
+
+    polygonShape.SetAsBox(extents.x, extents.y, b2Vec2(center.x, center.y), 0.0);
+    
+    fixtureDef.shape = &polygonShape;
+    fixtureDef.density = rigidbody->props.mass / (size.x * size.y);
+
+    body->CreateFixture(&fixtureDef);
+
+    collider->nativeShape = dynamic_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
     
     rigidbody->nativeBody = body;
 }

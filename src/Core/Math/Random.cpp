@@ -1,7 +1,7 @@
 #include "Core/Math/Random.hpp"
 using namespace Scramble;
 
-Random::Random(U32 seed)
+Random::Random(F64 seed)
 {
     this->generator = std::default_random_engine(seed);
 

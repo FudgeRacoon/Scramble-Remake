@@ -63,7 +63,7 @@ void RuntimeScene::OnExitRuntime()
     this->sceneRegistry->ResetSetupQueue();
 }
 
-WeakPtr<Camera> RuntimeScene::GetSceneCamera()
+SharedPtr<Camera> RuntimeScene::GetSceneCamera()
 {
     return this->sceneCamera;
 }

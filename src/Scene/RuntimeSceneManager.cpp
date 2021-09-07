@@ -6,6 +6,7 @@ SharedPtr<RuntimeScene> RuntimeSceneManager::activeScene;
 
 WeakPtr<RuntimeScene> RuntimeSceneManager::GetActiveScene()
 {
+    SCRAMBLE_CORE_ASSERT_LOG(activeScene, "There is no active scene!");
     return activeScene;
 }
 

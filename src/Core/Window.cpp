@@ -53,7 +53,6 @@ void Window::Internal_ShutDown()
     this->windowHandle = nullptr;
 }
 void Window::Internal_CreateWindow()
-
 {
     if(this->fullscreen)
     {
