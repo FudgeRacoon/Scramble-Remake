@@ -20,7 +20,7 @@ namespace Scramble
 
         void OnUpdate() override
         {
-           RuntimeSceneManager::UpdateActiveScene();
+            //RuntimeSceneManager::UpdateActiveScene();
         }
 
         void OnExit() override

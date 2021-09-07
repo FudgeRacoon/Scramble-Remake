@@ -20,8 +20,6 @@ namespace Scramble::Scene
 
     private:
         U32 instanceId;
-
-    private:
         ComponentArray components;
 
     private:
@@ -75,6 +73,8 @@ namespace Scramble::Scene
                     this->components.erase(it);
                     return;
                 }
+
+            S_WARN("Attempting to remove non-existing component!");
         }
 
     public:
