@@ -10,13 +10,14 @@ SOURCE_DIR += src/Scene/Components/*.cpp src/Scene/*.cpp
 SOURCE_DIR += src/Utils/*.cpp
 SOURCE_DIR += src/*.cpp
 
+SOURCE_DIR += vendor/Box2D/src/collision/*.cpp vendor/Box2D/src/common/*.cpp vendor/Box2D/src/dynamics/*.cpp vendor/Box2D/src/rope/*.cpp  
 SOURCE_DIR += vendor/stb_image/*.cpp
 
 LINKER_FLAGS = -lglfw3dll -lglew32 -lopengl32
 BINARY_OUTPUT = Scramble.exe
 
 compile:
-	$(CC) $(CC_FLAGS) $(SOURCE_DIR) -o build/$(BINARY_OUTPUT) -Iinclude -Ivendor -Llib $(LINKER_FLAGS)
+	$(CC) $(CC_FLAGS) $(SOURCE_DIR) -o build/$(BINARY_OUTPUT) -Iinclude -Ivendor -Ivendor/Box2D/include -Ivendor/Box2D/src -Llib $(LINKER_FLAGS)
 
 run:
 	build/$(BINARY_OUTPUT)
