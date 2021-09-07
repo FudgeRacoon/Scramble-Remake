@@ -47,7 +47,7 @@ namespace Scramble
     public:
         static void CreateSprite(std::string name, WeakPtr<Texture> texture);
         static void CreateSprite(std::string name, WeakPtr<Texture> texture, Rect rect);
-        static void CreateSprite(std::string name, WeakPtr<Texture> texture, Vector2* uv);
+        static void CreateSprite(std::string name, WeakPtr<Texture> texture, Vector2* uv, U32 width = 0, U32 height = 0);
 
     public:
         static void LoadFont(std::string name, Str filepath);

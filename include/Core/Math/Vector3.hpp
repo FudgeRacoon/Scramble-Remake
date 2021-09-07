@@ -35,7 +35,7 @@ namespace Scramble
         void operator *=(float value);
         void operator /=(float value);
 
-    private:
+    public:
         bool operator ==(Vector3 v);
         bool operator !=(Vector3 v);
 

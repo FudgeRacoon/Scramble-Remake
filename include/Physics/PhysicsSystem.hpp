@@ -5,8 +5,16 @@
 
 #include "Core/Common/Types.hpp"
 #include "Core/Time/Time.hpp"
-#include "Core/Math/Vector2.hpp"
+#include "Core/Math/Vector3.hpp"
+
+namespace Scramble::Scene
+{
+    class RigidBody;
+    class BoxCollider;
+}
+
 using namespace Scramble;
+using namespace Scramble::Scene;
 
 namespace Scramble::Physics
 {
@@ -27,8 +35,11 @@ namespace Scramble::Physics
         static I32 velocityIterations;
 
     public:
-        static void OnStartUp(Vector2 gravity, F32 timeStep);
+        static void OnStartUp(Vector3 gravity, F32 timeStep);
         static void OnShutDown();
+
+    public:
+        static void AddBody(RigidBody* rigidbody, BoxCollider* collider);
 
     public:
         static void FixedUpdate();
