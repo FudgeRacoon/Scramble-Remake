@@ -10,21 +10,27 @@
 #include "../Entity.hpp"
 #include "../Component.hpp"
 #include "Transform.hpp"
-#include "SpriteRenderer.hpp"
 
 using namespace Scramble;
 using namespace Scramble::Physics;
 
 namespace Scramble::Scene
 {
+    struct ColliderProps
+    {
+        Bounds bounds;
+        Vector3 offset;
+
+        F32 friction;
+        F32 resistution;
+
+        bool isTrigger;
+    };  
+
     class BoxCollider : public Component
     {   
     private:
-        b2PolygonShape* nativeShape;
-
-    private:
-        Bounds bounds;
-        Vector3 offset;
+        ColliderProps props;
 
     private:
         Transform* ownerTransform;
@@ -38,9 +44,23 @@ namespace Scramble::Scene
         Vector3 GetExtents();
 
     public:
+        F32 GetFriction();
+        F32 GetResistution();
+
+    public:
+        bool IsTrigger();
+
+    public:
         void SetSize(Vector3 value);
         void SetCenter(Vector3 value);
         void SetExtents(Vector3 value);
+
+    public:
+        void SetFriction(F32 value);
+        void SetResistution(F32 value);
+
+    public:
+        void SetTrigger(bool value);
 
     public:
         void Setup() override;

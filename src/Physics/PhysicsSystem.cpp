@@ -14,6 +14,66 @@ F32 PhysicsSystem::accumulator = 0.0;
 I32 PhysicsSystem::positionIterations = 0;
 I32 PhysicsSystem::velocityIterations = 0;
 
+I32 PhysicsSystem::Internal_FixtureListSize(RigidBody* rigidbody)
+{
+    I32 size = 0;
+    b2Fixture* fixture = rigidbody->nativeBody->GetFixtureList();
+    
+    while(fixture) 
+    {
+        size++;
+        fixture = fixture->GetNext();
+    }
+
+    return size;
+}
+
+b2BodyDef PhysicsSystem::Internal_CreateBodyDef(RigidBody* rigidbody)
+{
+    b2BodyDef bodyDef;
+
+    Vector3 position = rigidbody->ownerTransform->position / PTM_RATIO;
+    Vector3 rotation = rigidbody->ownerTransform->rotation;
+
+    bodyDef.position.Set(position.x, position.y);
+    bodyDef.angle = transform->rotation.z;
+
+    bodyDef.linearDamping = rigidbody->props.linearDrag;
+    bodyDef.angularDamping = rigidbody->props.angularDrag;
+    bodyDef.gravityScale = rigidbody->props.gravityScale;
+
+    switch(rigidbody->props.bodyType)
+    {
+        case BodyType::STATIC:    bodyDef.type = b2BodyType::b2_staticBody; break;
+        case BodyType::DYNAMIC:   bodyDef.type = b2BodyType::b2_dynamicBody; break;
+        case BodyType::KINEMATIC: bodyDef.type = b2BodyType::b2_kinematicBody; break;
+    }
+
+    bodyDef.fixedRotation = rigidbody->props.fixedRotation;
+    bodyDef.bullet = rigidbody->props.continuousCollison;
+
+    return bodyDef;
+}
+b2FixtureDef PhysicsSystem::Internal_CreateFixtureDef(BoxCollider* collider)
+{
+    b2PolygonShape shape;
+    b2FixtureDef fixtureDef;
+
+    Vector3 size = collider->GetSize() / PTM_RATIO;
+    Vector3 center = collider->GetCenter() / PTM_RATIO;
+    Vector3 extents = collider->GetExtents() / PTM_RATIO;
+
+    shape.SetAsBox(extents.x, extents.y, b2Vec2(size.x, size.y), 0);
+
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = Math::Clamp(collider->GetFriction(), 0.0, 1.0);
+    fixtureDef.restitution = Math::Clamp(collider->GetResistution(), 0.0, 1.0);
+    fixtureDef.isSensor = collirder->IsTrigger();
+
+    return fixtureDef;
+}
+
 void PhysicsSystem::OnStartUp(Vector3 gravity, F32 timeStep)
 {
     PhysicsSystem::globalGravity = gravity;
@@ -31,49 +91,55 @@ void PhysicsSystem::OnShutDown()
 
 void PhysicsSystem::AddBody(RigidBody* rigidbody, BoxCollider* collider)
 {
-    b2Body* body = nullptr;
-    Transform* transform = rigidbody->ownerTransform;
-
-    b2BodyDef bodyDef;
-    b2FixtureDef fixtureDef;
-    b2PolygonShape polygonShape;
-
-    bodyDef.position.Set(
-        transform->position.x / PhysicsSystem::PPM, 
-        transform->position.y / PhysicsSystem::PPM
-    );
-    bodyDef.angle = transform->rotation.z;
-
-    bodyDef.linearDamping = rigidbody->props.linearDrag;
-    bodyDef.angularDamping = rigidbody->props.angularDrag;
-    bodyDef.gravityScale = rigidbody->props.gravityScale;
-
-    switch(rigidbody->props.bodyType)
-    {
-        case BodyType::STATIC:    bodyDef.type = b2BodyType::b2_staticBody; break;
-        case BodyType::DYNAMIC:   bodyDef.type = b2BodyType::b2_dynamicBody; break;
-        case BodyType::KINEMATIC: bodyDef.type = b2BodyType::b2_kinematicBody; break;
-    }
-
-    bodyDef.fixedRotation = rigidbody->props.fixedRotation;
-    bodyDef.bullet = rigidbody->props.continuousCollison;
-
-    body = physicsWorld->CreateBody(&bodyDef);
-    
-    Vector3 size = collider->GetSize() / PhysicsSystem::PPM;
-    Vector3 center = collider->GetCenter() / PhysicsSystem::PPM;
-    Vector3 extents = collider->GetExtents() / PhysicsSystem::PPM;
-
-    polygonShape.SetAsBox(extents.x, extents.y, b2Vec2(center.x, center.y), 0.0);
-    
-    fixtureDef.shape = &polygonShape;
-    fixtureDef.density = rigidbody->props.mass / (size.x * size.y);
-
-    body->CreateFixture(&fixtureDef);
-
-    collider->nativeShape = dynamic_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
+    b2BodyDef bodyDef = Internal_CreateBodyDef(rigidbody);
+    b2Body* body = physicsWorld->CreateBody(&bodyDef);
     
     rigidbody->nativeBody = body;
+
+    if(collider)
+        AddBoxCollider(rigidbody, collider);
+}
+void PhysicsSystem::RemoveBody(RigidBody* rigidbody)
+{
+    physicsWorld->DestroyBody(rigidbody->nativeBody);
+}
+void PhysicsSystem::RemoveFixture(RigidBody* rigidbody)
+{
+    int size = Internal_FixtureListSize(rigidbody);
+
+    for(int i = 0; i < size; i++)
+        rigidbody->nativeBody->DestroyFixture(
+            rigidbody->nativeBody->GetFixtureList()
+        );
+}
+
+void PhysicsSystem::AddBoxCollider(RigidBody* rigidbody, BoxCollider* collider)
+{
+    b2FixtureDef fixtureDef = Internal_CreateFixtureDef(collider);
+    rigidbody->nativeBody->CreateFixture(&fixtureDef);
+}
+
+void PhysicsSystem::ResetBoxCollider(RigidBody* rigidbody, BoxCollider* collider)
+{
+    int size = Internal_FixtureListSize(rigidbody);
+
+    for(int i = 0; i < size; i++)
+        rigidbody->nativeBody->DestroyFixture(
+            rigidbody->nativeBody->GetFixtureList()
+        );
+
+    AddBoxCollider(rigidbody, collider);
+}
+
+void PhysicsSystem::SetSensor(RigidBody* rigidbody, bool value)
+{
+    b2Fixture* fixture = rigidbody->nativeBody->GetFixtureList();
+
+    while(fixture)
+    {
+        fixture->SetSensor(value);
+        fixture = fixture->GetNext();
+    }
 }
 
 void PhysicsSystem::FixedUpdate()

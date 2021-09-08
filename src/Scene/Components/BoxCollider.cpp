@@ -3,13 +3,22 @@ using namespace Scramble::Scene;
 
 #include "Core/Math/Color.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Core/Logger/Logger.hpp"
 
 BoxCollider::BoxCollider(Entity* owner) : Component(owner)
 {
     this->ownerTransform = this->owner->GetComponent<Transform>();
+
+    this->props.bounds.SetSize(Vector3(64.0, 64.0, 0.0));
+
+    RigidBody* rigidbody = owner->GetComponent<RigidBody>();
     
-    this->bounds.SetSize(Vector3(64.0, 64.0, 0.0));
+    if(!rigidbody)
+    {
+        owner->AddComponent<RigidBody>();
+        rigidbody = owner->GetComponent<RigidBody>();
+    }
+        
+    PhysicsSystem::AddBoxCollider(rigidbody, this);
 }
 
 Vector3 BoxCollider::GetSize()
@@ -25,48 +34,71 @@ Vector3 BoxCollider::GetExtents()
     return this->bounds.GetExtents();
 }
 
+F32 BoxCollider::GetFriction()
+{
+    return this->props.friction;
+}
+F32 BoxCollider::GetResistution()
+{
+    return this->props.resistution;
+}
+
+bool BoxCollider::IsTrigger()
+{
+    return this->props.isTrigger;
+}
+
 void BoxCollider::SetSize(Vector3 value)
 {
-    this->bounds.SetSize(value);
+    this->props.bounds.SetSize(value);
 
-    Vector3 center = this->bounds.GetCenter() / PhysicsSystem::PPM;
-    Vector3 extents = this->bounds.GetExtents() / PhysicsSystem::PPM;
-    this->nativeShape->SetAsBox(extents.x, extents.y, b2Vec2(center.x, center.y), 0.0);
+    PhysicsSystem::ResetBoxCollider(owner->GetComponent<RigidBody>(), this);
 }
 void BoxCollider::SetCenter(Vector3 value)
 {
-    this->bounds.SetCenter(value);
-    this->offset = this->ownerTransform->position - value;
+    this->props.bounds.SetCenter(value);
+    this->props.offset = value - ownerTransform->position;
 
-    value = value / PhysicsSystem::PPM;
-
-    Vector3 extents = this->bounds.GetExtents() / PhysicsSystem::PPM;
-    this->nativeShape->SetAsBox(extents.x, extents.y, b2Vec2(value.x, value.y), 0.0);
+    PhysicsSystem::ResetBoxCollider(owner->GetComponent<RigidBody>(), this);
 }
 void BoxCollider::SetExtents(Vector3 value)
 {
-    this->bounds.SetExtents(value);
+    this->props.bounds.SetExtents(value);
     
-    value = value  / PhysicsSystem::PPM;
-
-    Vector3 center = this->bounds.GetCenter() / PhysicsSystem::PPM;;
-    this->nativeShape->SetAsBox(value.x, value.y, b2Vec2(center.x, center.y), 0.0);
+    PhysicsSystem::ResetBoxCollider(owner->GetComponent<RigidBody>(), this);
 }
 
-void BoxCollider::Setup()
+void BoxCollider::SetFriction(F32 value)
 {
-   
-} 
+    this->props.friction = value;
+
+    PhysicsSystem::ResetBoxCollider(owner->GetComponent<RigidBody>(), this);
+}
+void BoxCollider::SetResistution(F32 value)
+{
+    this->props.resistution = value;
+
+    PhysicsSystem::ResetBoxCollider(owner->GetComponent<RigidBody>(), this);
+}
+
+void BoxCollider::SetTrigger(bool value)
+{
+    this->props.isTrigger = value;
+
+    PhysicsSystem::SetSensor(owner->GetComponent<RigidBody>(), value);
+}
+
+void BoxCollider::Setup() {}
 void BoxCollider::Update()
 {
-    this->bounds.SetCenter(this->ownerTransform->position + this->offset);
+    this->props.bounds.SetCenter(this->ownerTransform->position + this->offset);
 
     Renderer::DrawQuad(
         Rect(
-            bounds.GetMin().x,
-            bounds.GetMin().y + bounds.GetSize().y,
-            bounds.GetSize().x,
-            bounds.GetSize().y
+            this->props.bounds.GetMin().x,
+            this->props.bounds.GetMin().y + bounds.GetSize().y,
+            this->props.bounds.GetSize().x,
+            this->props.bounds.GetSize().y
         ),
         Color::red
     );

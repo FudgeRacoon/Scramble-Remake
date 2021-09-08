@@ -17,8 +17,6 @@ RigidBody::RigidBody(Entity* owner) : Component(owner)
 
     this->ownerTransform = this->owner->GetComponent<Transform>();
     
-    this->owner->AddComponent<BoxCollider>();
-    
     PhysicsSystem::AddBody(this, this->owner->GetComponent<BoxCollider>());
 }
 RigidBody::RigidBody(Entity* owner, BodyType bodyType, F32 mass) : Component(owner)
@@ -42,6 +40,13 @@ RigidBody::RigidBody(Entity* owner, BodyType bodyType, F32 mass) : Component(own
     PhysicsSystem::AddBody(this, this->owner->GetComponent<BoxCollider>());
 }
 
+RigidBody::~RigidBody()
+{
+    owner->RemoveComponent<BoxCollider>();
+
+    PhysicsSystem::RemoveBody(this);
+}
+
 F32 RigidBody::GetMass()
 {
     return this->props.mass;
@@ -59,9 +64,13 @@ F32 RigidBody::GetGravityScale()
     return this->props.gravityScale;
 }
         
-Vector3 RigidBody::GetVelocity()
+Vector3 RigidBody::GetLinearVelocity()
 {
-    return this->props.velocity;
+    return this->props.linearVelocity;
+}
+Vector3 RigidBody::GetAngularVelocity()
+{
+    return this->props.angularVelocity;
 }
         
 bool RigidBody::IsFixedRotation()
@@ -93,10 +102,15 @@ void RigidBody::SetGravityScale(F32 value)
     this->nativeBody->SetGravityScale(value);
 }
  
-void RigidBody::SetVelocity(Vector3 value)
+void RigidBody::SetLineaVelocity(Vector3 value)
 {
-    this->props.velocity = value;
+    this->props.linearVelocity = value;
     this->nativeBody->SetLinearVelocity(b2Vec2(value.x, value.y));
+}
+void RigidBody::SetAngularVelocity(Vector3 value)
+{
+    this->props.angularVelocity = value;
+    this->nativeBody->SetAngularVelocity(value.x);
 }
         
 void RigidBody::SetFixedRotation(bool value)
@@ -110,16 +124,14 @@ void RigidBody::SetContinousCollision(bool value)
     this->nativeBody->SetBullet(value);
 }
 
-void RigidBody::Setup()
-{
-    
-}
+void RigidBody::Setup() {}
 void RigidBody::Update()
 {
     b2Vec2 nativeVelocity = this->nativeBody->GetLinearVelocity();
-    this->props.velocity = Vector3(nativeVelocity.x, nativeVelocity.y, 0.0);
+    nativeVelocity *= PhysicsSystem::PTM_RATIO;
+    this->props.linearVelocity = Vector3(nativeVelocity.x, nativeVelocity.y, 0.0);
 
-    this->ownerTransform->position.x = this->nativeBody->GetPosition().x * PhysicsSystem::PPM;
-    this->ownerTransform->position.y = this->nativeBody->GetPosition().y * PhysicsSystem::PPM;
+    this->ownerTransform->position.x = this->nativeBody->GetPosition().x * PhysicsSystem::PTM_RATIO;
+    this->ownerTransform->position.y = this->nativeBody->GetPosition().y * PhysicsSystem::PTM_RATIO;
     this->ownerTransform->rotation.z = this->nativeBody->GetAngle();
 }

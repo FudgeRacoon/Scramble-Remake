@@ -10,7 +10,6 @@
 #include "../Entity.hpp"
 #include "../Component.hpp"
 #include "Transform.hpp"
-#include "BoxCollider.hpp"
 
 using namespace Scramble;
 using namespace Scramble::Physics;
@@ -24,8 +23,9 @@ namespace Scramble::Scene
         F32 angularDrag;
         F32 gravityScale;
         
-        Vector3 velocity;
-        
+        Vector3 linearVelocity;
+        Vector3 angularVelocity;
+
         BodyType bodyType;
         
         bool fixedRotation;
@@ -48,13 +48,17 @@ namespace Scramble::Scene
         RigidBody(Entity* owner, BodyType bodyType, F32 mass);
 
     public:
+        ~RigidBody();
+
+    public:
         F32 GetMass();
         F32 GetLinearDrag();
         F32 GetAngularDrag();
         F32 GetGravityScale();
         
     public:
-        Vector3 GetVelocity();
+        Vector3 GetLinearVelocity();
+        Vector3 GetAngularVelocity();
 
     public:        
         bool IsFixedRotation();
@@ -67,7 +71,8 @@ namespace Scramble::Scene
         void SetGravityScale(F32 value);
 
     public: 
-        void SetVelocity(Vector3 value);
+        void SetLineaVelocity(Vector3 value);
+        void SetAngularVelocity(Vector3 value);
 
     public:   
         void SetFixedRotation(bool value);
