@@ -2,10 +2,10 @@
 #define RIGIDBODY_HPP
 
 #include "Core/Common/Types.hpp"
+#include "Core/Debug/Assert.hpp"
 #include "Core/Math/Vector3.hpp"
 
-#include "Physics/BodyType.hpp"
-#include "Physics/PhysicsSystem.hpp"
+#include "Physics/Body.hpp"
 
 #include "../Entity.hpp"
 #include "../Component.hpp"
@@ -18,44 +18,53 @@ namespace Scramble::Scene
 {   
     struct BodyProps
     {
-        F32 mass;
-        F32 linearDrag;
-        F32 angularDrag;
-        F32 gravityScale;
-        
         Vector3 linearVelocity;
         Vector3 angularVelocity;
 
-        BodyType bodyType;
+        BodyType type;
+
+        F32 linearDrag;
+        F32 angularDrag;
+        F32 gravityScale;
         
         bool fixedRotation;
         bool continuousCollison;
     };
 
+    enum ForceMode
+    {
+        FORCE = 0,
+        IMPULSE
+    };
+
     class RigidBody : public Component
     {
     private:
-        b2Body* nativeBody;
+        Body* body;
+        Transform* transform;
 
     private:
         BodyProps props;
 
-    private:
-        Transform* ownerTransform;
-
     public:
         RigidBody(Entity* owner);
-        RigidBody(Entity* owner, BodyType bodyType, F32 mass);
+        RigidBody(Entity* owner, BodyType bodyType);
+        RigidBody(Entity* owner, Vector3 initialVelocity);
 
     public:
         ~RigidBody();
 
     public:
-        F32 GetMass();
+        Body* GetBody();
+
+    public:
         F32 GetLinearDrag();
         F32 GetAngularDrag();
         F32 GetGravityScale();
-        
+    
+    public:
+        BodyType GetType();
+
     public:
         Vector3 GetLinearVelocity();
         Vector3 GetAngularVelocity();
@@ -65,13 +74,15 @@ namespace Scramble::Scene
         bool IsContinousCollision();
 
     public:
-        void SetMass(F32 value);
         void SetLinearDrag(F32 value);
         void SetAngularDrag(F32 value);
         void SetGravityScale(F32 value);
 
+    public:
+        void SetType(BodyType type);
+
     public: 
-        void SetLineaVelocity(Vector3 value);
+        void SetLinearVelocity(Vector3 value);
         void SetAngularVelocity(Vector3 value);
 
     public:   
@@ -79,10 +90,12 @@ namespace Scramble::Scene
         void SetContinousCollision(bool value);
 
     public:
+        void AddForce(Vector3 force, ForceMode mode);
+        void AddTorque(F32 torque, ForceMode mode = ForceMode::FORCE);
+
+    public:
         void Setup() override;
         void Update() override;
-
-    friend PhysicsSystem;
     };
 }
 

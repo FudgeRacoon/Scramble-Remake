@@ -30,19 +30,18 @@ namespace Scramble::Scene
 
     public:
         template<typename CompT, typename... CompArgs>
-        void AddComponent(CompArgs... args)
+        CompT* AddComponent(CompArgs... args)
         {
             SCRAMBLE_CORE_ASSERT_LOG((std::is_base_of<Component,CompT>::value), "Type passed is not a component!");
            
             for(auto component : this->components)
                 if(dynamic_cast<CompT*>(component))
-                {
-                    S_WARN("Attempting to add existing component!");
-                    return;
-                }
+                    return dynamic_cast<CompT*>(component);
+                
                     
             CompT* comp = new CompT(this, args...);
             components.push_back(comp);
+            return comp;
         }
         template<typename CompT>
         CompT* GetComponent()

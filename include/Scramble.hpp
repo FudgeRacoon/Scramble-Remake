@@ -33,8 +33,6 @@
 #include "Physics/Bounds.hpp"
 #include "Physics/PhysicsSystem.hpp"
 
-#include "Runtime/ScrambleGame.hpp"
-
 #include "Utils/SpriteUtils.hpp"
 #include "Utils/Utility.hpp"
 

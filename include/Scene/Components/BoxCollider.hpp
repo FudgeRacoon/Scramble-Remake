@@ -2,10 +2,11 @@
 #define BOX_COLLIDER_HPP
 
 #include "Core/Common/Types.hpp"
+#include "Core/Debug/Assert.hpp"
 #include "Core/Math/Vector3.hpp"
 
+#include "Physics/Body.hpp"
 #include "Physics/Bounds.hpp"
-#include "Physics/PhysicsSystem.hpp"
 
 #include "../Entity.hpp"
 #include "../Component.hpp"
@@ -21,20 +22,24 @@ namespace Scramble::Scene
         Bounds bounds;
         Vector3 offset;
 
+        F32 mass;
         F32 friction;
         F32 resistution;
+
+        F32 restitutionThreshold;
 
         bool isTrigger;
     };  
 
     class BoxCollider : public Component
-    {   
+    {
+    private:
+        Body* body;   
+        Transform* transform;
+    
     private:
         ColliderProps props;
 
-    private:
-        Transform* ownerTransform;
-    
     public:
         BoxCollider(Entity* owner);
         BoxCollider(Entity* owner, Vector3 size);
@@ -45,6 +50,7 @@ namespace Scramble::Scene
         Vector3 GetExtents();
 
     public:
+        F32 GetMass();
         F32 GetFriction();
         F32 GetResistution();
 
@@ -57,6 +63,7 @@ namespace Scramble::Scene
         void SetExtents(Vector3 value);
 
     public:
+        void SetMass(F32 value);
         void SetFriction(F32 value);
         void SetResistution(F32 value);
 
@@ -66,8 +73,6 @@ namespace Scramble::Scene
     public:
         void Setup() override;
         void Update() override;
-
-    friend PhysicsSystem;
     };
 }
 

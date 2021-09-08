@@ -70,7 +70,7 @@ void Application::ShutDown()
 
     Graphics::Renderer::OnShutDown();
     ResourceManager::OnShutDown();
-
+    
     Events::EventDispatcher::OnShutDown();
 
     windowContext.reset(nullptr);

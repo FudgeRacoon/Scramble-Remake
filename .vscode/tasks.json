@@ -3,7 +3,7 @@
         {
             "type": "cppbuild",
             "label": "Compile",
-            "command": "D:\\Karim\\MinGW\\bin\\g++.exe",
+            "command": "C:\\MinGW\\bin\\g++.exe",
             "args": [
                 "-g",
                 "-std=c++17",
