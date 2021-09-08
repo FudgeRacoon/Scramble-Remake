@@ -37,6 +37,7 @@ namespace Scramble::Scene
     
     public:
         BoxCollider(Entity* owner);
+        BoxCollider(Entity* owner, Vector3 size);
     
     public:
         Vector3 GetSize();

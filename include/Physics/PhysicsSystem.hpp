@@ -43,7 +43,6 @@ namespace Scramble::Physics
         
     private:
         static b2BodyDef Internal_CreateBodyDef(RigidBody* rigidbody);
-        static b2FixtureDef Internal_CreateFixtureDef(BoxCollider* collider);
 
     public:
         static void OnStartUp(Vector3 gravity, F32 timeStep);

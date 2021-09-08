@@ -1,6 +1,8 @@
 #include "Scene/Components/RigidBody.hpp"
 using namespace Scramble::Scene;
 
+#include "Scene/Components/BoxCollider.hpp"
+
 RigidBody::RigidBody(Entity* owner) : Component(owner)
 {
     this->nativeBody = nullptr;
@@ -34,8 +36,6 @@ RigidBody::RigidBody(Entity* owner, BodyType bodyType, F32 mass) : Component(own
     this->props.continuousCollison = true;
 
     this->ownerTransform = this->owner->GetComponent<Transform>();
-
-    this->owner->AddComponent<BoxCollider>();
 
     PhysicsSystem::AddBody(this, this->owner->GetComponent<BoxCollider>());
 }

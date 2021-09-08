@@ -67,7 +67,7 @@ namespace Scramble::Scene
             for(auto it = this->components.begin(); it != this->components.end(); it++)
                 if(dynamic_cast<CompT*>(*it))
                 {
-                    delete it;
+                    delete *(it);
                     this->components.erase(it);
                     return;
                 }

@@ -36,7 +36,7 @@ b2BodyDef PhysicsSystem::Internal_CreateBodyDef(RigidBody* rigidbody)
     Vector3 rotation = rigidbody->ownerTransform->rotation;
 
     bodyDef.position.Set(position.x, position.y);
-    bodyDef.angle = transform->rotation.z;
+    bodyDef.angle = rotation.z;
 
     bodyDef.linearDamping = rigidbody->props.linearDrag;
     bodyDef.angularDamping = rigidbody->props.angularDrag;
@@ -53,25 +53,6 @@ b2BodyDef PhysicsSystem::Internal_CreateBodyDef(RigidBody* rigidbody)
     bodyDef.bullet = rigidbody->props.continuousCollison;
 
     return bodyDef;
-}
-b2FixtureDef PhysicsSystem::Internal_CreateFixtureDef(BoxCollider* collider)
-{
-    b2PolygonShape shape;
-    b2FixtureDef fixtureDef;
-
-    Vector3 size = collider->GetSize() / PTM_RATIO;
-    Vector3 center = collider->GetCenter() / PTM_RATIO;
-    Vector3 extents = collider->GetExtents() / PTM_RATIO;
-
-    shape.SetAsBox(extents.x, extents.y, b2Vec2(size.x, size.y), 0);
-
-    fixtureDef.shape = &shape;
-    fixtureDef.density = 1.0;
-    fixtureDef.friction = Math::Clamp(collider->GetFriction(), 0.0, 1.0);
-    fixtureDef.restitution = Math::Clamp(collider->GetResistution(), 0.0, 1.0);
-    fixtureDef.isSensor = collirder->IsTrigger();
-
-    return fixtureDef;
 }
 
 void PhysicsSystem::OnStartUp(Vector3 gravity, F32 timeStep)
@@ -115,7 +96,21 @@ void PhysicsSystem::RemoveFixture(RigidBody* rigidbody)
 
 void PhysicsSystem::AddBoxCollider(RigidBody* rigidbody, BoxCollider* collider)
 {
-    b2FixtureDef fixtureDef = Internal_CreateFixtureDef(collider);
+    b2PolygonShape shape;
+    b2FixtureDef fixtureDef;
+
+    Vector3 size = collider->GetSize() / PTM_RATIO;
+    Vector3 center = collider->GetCenter() / PTM_RATIO;
+    Vector3 extents = collider->GetExtents() / PTM_RATIO;
+
+    shape.SetAsBox(extents.x, extents.y, b2Vec2(size.x, size.y), 0);
+
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = Math::Clamp(collider->GetFriction(), 0.0, 1.0);
+    fixtureDef.restitution = Math::Clamp(collider->GetResistution(), 0.0, 1.0);
+    fixtureDef.isSensor = collider->IsTrigger();
+
     rigidbody->nativeBody->CreateFixture(&fixtureDef);
 }
 
