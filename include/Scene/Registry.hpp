@@ -48,7 +48,7 @@ namespace Scramble::Scene
 
     public:
         WeakPtr<Entity> AddEntity();
-        WeakPtr<Entity> AddEntity(std::string tag);
+        WeakPtr<Entity> AddEntity(std::string tag, bool enabled = true);
         WeakPtr<Entity> AddEntity(Vector3 position, Vector3 rotation, Vector3 scale);
         WeakPtr<Entity> AddEntity(std::string tag, Vector3 position, Vector3 rotation, Vector3 scale);
 

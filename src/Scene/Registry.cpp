@@ -32,12 +32,12 @@ WeakPtr<Entity> Registry::AddEntity()
 
     return entity;
 }
-WeakPtr<Entity> Registry::AddEntity(std::string tag)
+WeakPtr<Entity> Registry::AddEntity(std::string tag, bool enabled)
 {
     U32 instanceId = IdGenerator();
     
     SharedPtr<Entity> entity(new Entity(instanceId), [] (Entity* entity) {delete entity;});
-    entity->AddComponent<Tag>(tag);
+    entity->AddComponent<Tag>(tag, enabled);
     entity->AddComponent<Transform>(Vector3(), Vector3(), Vector3(1.0, 1.0, 1.0));
 
     entites.insert(
@@ -114,13 +114,14 @@ void Registry::DestroyEntityById(U32 id)
     auto it = entites.find(id);
 
     if(it != entites.end())
-    {
+    {   
+        const char* name = it->second->GetComponent<Tag>()->tag.c_str();
+
         destroyQueue.push(it->second);
 
-        it->second.reset();
-        entites.erase(it);
+        S_INFO("Entity: %s has been destroyed succesfully!", name);
 
-        S_INFO("Entity: %s has been destroyed succesfully!", it->second->GetComponent<Tag>()->tag.c_str());
+        return;
     }
 
     S_WARN("Entity does not exist!");
@@ -133,9 +134,6 @@ void Registry::DestroyEntityByTag(std::string tag)
         if(it->second->GetComponent<Tag>()->tag == tag)
         {
             destroyQueue.push(it->second);
-
-            it->second.reset();
-            entites.erase(it);
 
             S_INFO("Entity: %s has been destroyed succesfully!", tag.c_str());
 
@@ -157,7 +155,14 @@ void Registry::PollDestroyQueue()
 {
     while(!destroyQueue.empty())
     {
-        destroyQueue.front().reset();
+        auto entity = destroyQueue.front();
+
+        auto it = entites.find(entity->instanceId);
+        entity.reset();
+
+        it->second.reset();
+        entites.erase(it);
+
         destroyQueue.pop();
     }
 }

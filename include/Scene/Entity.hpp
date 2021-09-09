@@ -9,6 +9,7 @@
 #include "Core/Logger/Logger.hpp"
 
 #include "Scene/Component.hpp"
+#include "Scene/Components/Tag.hpp"
 
 namespace Scramble::Scene
 {
@@ -19,9 +20,10 @@ namespace Scramble::Scene
     typedef std::vector<Component*> ComponentArray;
 
     private:
-        U32 instanceId;
         ComponentArray components;
-
+    
+    public:
+        U32 instanceId;
     private:
         Entity(U32 instanceId);
 
@@ -78,6 +80,8 @@ namespace Scramble::Scene
     
     friend Registry;
     };
+
+    #define IsActive(value) GetComponent<Tag>()->enabled = value
 }
 
 #endif

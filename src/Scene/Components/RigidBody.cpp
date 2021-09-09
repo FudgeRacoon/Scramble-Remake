@@ -22,7 +22,6 @@ RigidBody::RigidBody(Entity* owner, Vector3 initialVelocity) : Component(owner)
 RigidBody::~RigidBody()
 {
     delete this->body;
-    owner->RemoveComponent<BoxCollider>();
 }
 
 Body* RigidBody::GetBody()

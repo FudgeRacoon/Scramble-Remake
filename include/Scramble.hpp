@@ -41,6 +41,7 @@
 #include "Scene/Components/SpriteRenderer.hpp"
 #include "Scene/Components/RigidBody.hpp"
 #include "Scene/Components/BoxCollider.hpp"
+#include "Scene/Components/AnimationSystem.hpp"
 
 #include "Scene/Camera.hpp"
 #include "SCene/Component.hpp"

@@ -3,7 +3,7 @@ using namespace Scramble::Graphics;
 
 Sprite::Sprite(WeakPtr<Texture> texture)
 {
-    this->rect = Rect(-32.0, 32.0, 64.0, 64.0);
+    this->rect = Rect(-16.0, 16.0, 32.0, 32.0);
     this->texture = texture;
     this->textureCoordinates = new Vector2[4];
 

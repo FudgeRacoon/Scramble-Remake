@@ -24,7 +24,7 @@ void Application::Start(RuntimeInstance* instance)
     ResourceManager::OnStartUp();
     Graphics::Renderer::OnStartUp();
 
-    Physics::PhysicsSystem::OnStartUp(Vector3(0.0, -10.0, 0.0), 1.0 / 120.0);
+    Physics::PhysicsSystem::OnStartUp(Vector3(0.0, 0.0, 0.0), 1.0 / 120.0);
 
     windowContext->SetOnWindowClose([] () {windowContext->CloseWindow();});
     windowContext->SetOnWindowMove([] (WindowMovedEvent* e) {windowContext-> x = e->GetX(); windowContext->y = e->GetY();});
@@ -61,8 +61,6 @@ void Application::Run()
             Time::OnFrameEnd();
         }
     }
-
-    runtimeContext->OnExit();
 }
 void Application::ShutDown()
 {

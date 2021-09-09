@@ -21,7 +21,7 @@ void ResourceManager::OnStartUp()
     
     defaultShader->GetNativeShader()->UnBind();
 
-    Texture* redTexture = new Texture(64, 64, 0xff0000ff);
+    Texture* greenTexture = new Texture(64, 64, 0xff000ff00);
     Texture* whiteTexture = new Texture(64, 64, 0xffffffff);
     Texture* blackTexture = new Texture(64, 64, 0x000000ff);
 
@@ -29,7 +29,7 @@ void ResourceManager::OnStartUp()
         std::make_pair(std::string("Default_Shader"), SharedPtr<Shader>(defaultShader, [](Shader* shader) {delete shader;}))  
     );
     textures.insert(
-        std::make_pair(std::string("Red_Texture"), SharedPtr<Texture>(redTexture, [](Texture* texture) {delete texture;}))
+        std::make_pair(std::string("Green_Texture"), SharedPtr<Texture>(greenTexture, [](Texture* texture) {delete texture;}))
     );
     textures.insert(
         std::make_pair(std::string("White_Texture"), SharedPtr<Texture>(whiteTexture, [](Texture* texture) {delete texture;}))
@@ -94,7 +94,7 @@ void ResourceManager::CreateSprite(std::string name, WeakPtr<Texture> texture, V
 
     if(it == sprites.end())
     {
-        Sprite* sprite = sprite = new Sprite(texture,  Rect(-32.0, 32.0, 64.0, 64.0), uv);
+        Sprite* sprite = sprite = new Sprite(texture, Rect(-16.0, 16.0, 32.0, 32.0), uv);
         
         sprites.insert(
             std::make_pair(name, SharedPtr<Sprite>(sprite, [](Sprite* sprite) {delete sprite;}))
@@ -105,6 +105,24 @@ void ResourceManager::CreateSprite(std::string name, WeakPtr<Texture> texture, V
     }
 
     S_WARN("Sprite already exists!");
+}
+
+void ResourceManager::CreateTexture(std::string name, U32 width, U32 height, U32 color)
+{
+    auto it = textures.find(name);
+
+    if(it == textures.end())
+    {
+        Texture* texture = new Texture(width, height, color);
+        textures.insert(
+            std::make_pair(name, SharedPtr<Texture>(texture, [](Texture* texture) {delete texture;}))
+        );
+
+        S_INFO("Texture: %s has been loaded succesfully!", name.c_str());
+        return;
+    }
+
+    S_WARN("Texture already exists!");
 }
 
 void ResourceManager::LoadFont(std::string name, Str filepath)

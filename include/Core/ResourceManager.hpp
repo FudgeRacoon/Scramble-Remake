@@ -50,6 +50,9 @@ namespace Scramble
         static void CreateSprite(std::string name, WeakPtr<Texture> texture, Vector2* uv);
 
     public:
+        static void CreateTexture(std::string name, U32 width, U32 height, U32 color);
+
+    public:
         static void LoadFont(std::string name, Str filepath);
         static void LoadAudio(std::string name, Str filepath);
         static void LoadShader(std::string name, Str vertexPath, Str fargmentPath);

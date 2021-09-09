@@ -22,8 +22,8 @@ namespace Scramble
         {
             this->title = "Scramble";
 
-            this->width = 800;
-            this->height = 600;
+            this->width = 448;
+            this->height = 512;
 
             this->fullscreen = false;
             this->vSync = true;

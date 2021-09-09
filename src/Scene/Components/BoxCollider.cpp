@@ -11,7 +11,7 @@ BoxCollider::BoxCollider(Entity* owner) : Component(owner)
     this->transform = owner->GetComponent<Transform>();
     RigidBody* rigidbody = owner->AddComponent<RigidBody>();
     
-    this->props.bounds.SetSize(Vector3(64.0, 64.0, 0.0));
+    this->props.bounds.SetSize(Vector3(32.0, 32.0, 0.0));
 
     this->body = rigidbody->GetBody();
     this->body->AddBoxFixture(this->props.bounds);

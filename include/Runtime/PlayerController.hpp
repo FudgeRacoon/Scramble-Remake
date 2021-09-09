@@ -7,11 +7,19 @@ using namespace Scramble::Input;
 using namespace Scramble::Scene;
 using namespace Scramble::Utils;
 
+#include "LaserShot.hpp"
+
 class PlayerController : public Component
 {
 private:
     F32 movementForce;
     F32 maximumVelocity;
+
+private:
+    F32 fireCooldown;
+    F32 previousFireTime;
+    I32 maximumLasersPresent;
+    I32 currentAliveLasers;
 
 private:
     bool clampVelX = false;
@@ -53,12 +61,17 @@ public:
 public:
     void Setup() override
     {
-        movementForce = 5.0f;
-        maximumVelocity = 200.0f;
+        movementForce = 20.0f;
+        maximumVelocity = 250.0f;
+
+        fireCooldown = 1.0f;
+        previousFireTime = 0.0f;
+        maximumLasersPresent = 4;
+        currentAliveLasers = 0;
 
         rigidbody = owner->GetComponent<RigidBody>();
 
-        rigidbody->SetLinearDrag(0.3f);
+        rigidbody->SetLinearDrag(0.9f);
         rigidbody->SetGravityScale(0.0f);
         rigidbody->SetFixedRotation(true);
     }
@@ -72,6 +85,18 @@ public:
             Move(Vector3::Up);
         if(InputManager::GetKey(KeyCode::KEY_S))
             Move(Vector3::Down);
+
+        if(InputManager::GetKeyDown(KeyCode::KEY_SPACE))
+        {
+            if(Time::GetElapsedTime() >= fireCooldown + previousFireTime)
+            {
+                previousFireTime = Time::GetElapsedTime();
+                
+                auto shot = CreateEntity();
+                shot.lock()->AddComponent<LaserShot>(owner->GetComponent<Transform>()->position);
+            }
+            
+        }
     }
 };  
 
